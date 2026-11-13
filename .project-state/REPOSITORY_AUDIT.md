@@ -37,3 +37,8 @@ Local test run (13 Nov 2026): all four Python test suites pass.
 
 ## Proposed destructive actions
 None. Nothing is recommended for archiving or deletion.
+
+## Discrepancies found and resolved
+- `resume.html` (main, c9c35e2) listed the B.Sc. as "Mathematics, Electronics and Computer Science";
+  the resume says "Computer Science". The page now follows the resume. Owner to confirm.
+- `main` did not track `.pyc` files (an earlier local check suggested it did; it did not).

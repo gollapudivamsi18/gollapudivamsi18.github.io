@@ -2,5 +2,6 @@
 
 - Live URL: https://gollapudivamsi18.github.io
 - Source: GitHub Pages, branch `main`, root folder, `.nojekyll`.
-- Live commit at start of this work: c9c35e2 (Pages build succeeded).
-- `portfolio-v2`: on GitHub, not merged. The live site is unchanged.
+- Live commit: c9c35e2 (unchanged; the redesign is not merged yet).
+- `portfolio-v2`: complete redesign and new demos, pushed to GitHub. Merge via pull request
+  after the owner reviews it; Pages then redeploys automatically from `main`.
