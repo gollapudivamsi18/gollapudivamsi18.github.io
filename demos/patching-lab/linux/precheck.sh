@@ -28,6 +28,7 @@ fi
   echo "host=$(hostname -s)"
   echo "taken_at=$(date -u +%FT%TZ)"
   echo "kernel=$(uname -r)"
+  # shellcheck source=/dev/null
   echo "os=$(. /etc/os-release && echo "$PRETTY_NAME")"
   echo "pkg_mgr=$pkg_mgr"
   echo "pending_updates=$pending"
