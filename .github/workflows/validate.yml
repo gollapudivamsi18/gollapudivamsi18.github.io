@@ -32,6 +32,14 @@ jobs:
         run: cd demos/migration-plan/scripts && python -m unittest -v
       - name: Patch report tests
         run: cd demos/patching-lab/report && python -m unittest -v
+      - name: SRE observability tests (error budget + service)
+        run: |
+          cd demos/sre-observability/slo && python -m unittest -v
+          cd ../app && python -m unittest -v
+      - name: Server ops toolkit tests (Linux scripts against fixtures)
+        run: python -m unittest discover -s demos/server-ops-toolkit/tests -v
+      - name: Portfolio assistant engine and knowledge base
+        run: node tests/assistant.test.js
       - name: Parse all YAML files
         run: |
           pip install --quiet pyyaml
@@ -88,7 +96,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: ShellCheck
-        run: shellcheck demos/patching-lab/linux/*.sh demos/aks-helm-sre/sre/*.sh
+        run: shellcheck demos/patching-lab/linux/*.sh demos/aks-helm-sre/sre/*.sh demos/server-ops-toolkit/linux/*.sh
       - name: Linux patch scripts (dry run)
         run: |
           bash demos/patching-lab/linux/precheck.sh /tmp/patchlab
@@ -98,9 +106,39 @@ jobs:
         shell: pwsh
         run: |
           Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
-          $r = Invoke-ScriptAnalyzer -Path demos/patching-lab/windows -Severity Error
+          $r = @()
+          $r += Invoke-ScriptAnalyzer -Path demos/patching-lab/windows -Severity Error
+          $r += Invoke-ScriptAnalyzer -Path demos/server-ops-toolkit/windows -Severity Error
           $r | Format-Table
           if ($r) { exit 1 }
+      - name: Pester tests (server ops module)
+        shell: pwsh
+        run: |
+          Install-Module Pester -MinimumVersion 5.5 -Force -Scope CurrentUser -SkipPublisherCheck
+          $c = New-PesterConfiguration
+          $c.Run.Path = 'demos/server-ops-toolkit/tests'
+          $c.Run.Exit = $true
+          $c.Output.Verbosity = 'Detailed'
+          Invoke-Pester -Configuration $c
+
+  prometheus:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: promtool check and unit-test alert rules
+        run: |
+          cd demos/sre-observability
+          docker run --rm -v "$PWD:/w" -w /w --entrypoint promtool prom/prometheus:v2.55.1 \
+            check rules prometheus/rules/orders-slo.rules.yml
+          docker run --rm -v "$PWD/prometheus/rules:/rules" -w /rules --entrypoint promtool prom/prometheus:v2.55.1 \
+            test rules orders-slo.rules.test.yml
+      - name: amtool check config
+        run: |
+          docker run --rm -v "$PWD/demos/sre-observability/alertmanager:/c" --entrypoint amtool \
+            prom/alertmanager:v0.27.0 check-config /c/alertmanager.yml
+      - name: docker compose config
+        run: docker compose -f demos/sre-observability/docker-compose.yml config --quiet
 
   public-site:
     # The public site must stay view-only: no resume files, no download links,
@@ -114,7 +152,7 @@ jobs:
           set -e
           files=$(git ls-files | grep -iE '\.(docx?|pdf|rtf|odt)$' || true)
           if [ -n "$files" ]; then echo "Document files found:"; echo "$files"; exit 1; fi
-          if grep -niE 'download(=|\s*>)|\.(docx|pdf)"' index.html resume.html; then
+          if grep -niE 'download(=|\s*>)|\.(docx|pdf)"' index.html resume.html projects.html; then
             echo "Download link found"; exit 1
           fi
           if grep -niE 'mailto:|\+91|[0-9]{10}' resume.html; then

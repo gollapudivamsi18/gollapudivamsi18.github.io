@@ -1,0 +1,4 @@
+# Runtime dependencies for inventory_api.py.
+# The service uses only the Python standard library, so this file is empty on
+# purpose. pip-audit still runs against it in CI so that adding a dependency
+# later is audited automatically.

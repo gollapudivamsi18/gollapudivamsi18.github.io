@@ -1,0 +1,47 @@
+# Local SRE demo stack. Runs entirely on your machine; nothing is deployed to Azure.
+#   docker compose up -d
+#   Grafana:      http://localhost:3000  (anonymous viewer access, demo only)
+#   Prometheus:   http://localhost:9090
+#   Alertmanager: http://localhost:9093
+# Raise ERROR_RATE on the orders service to watch the burn-rate alerts fire.
+services:
+  orders:
+    build: ./app
+    environment:
+      ERROR_RATE: "0.002"
+      SLOW_RATE: "0.02"
+    ports: ["8081:8081"]
+
+  loadgen:
+    image: curlimages/curl:8.10.1
+    depends_on: [orders]
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["while true; do curl -s -o /dev/null http://orders:8081/api/orders; sleep 0.1; done"]
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/rules:/etc/prometheus/rules:ro
+    ports: ["9090:9090"]
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    ports: ["9093:9093"]
+
+  webhook-sink:
+    # Prints alert notifications to the container log instead of paging anyone.
+    image: python:3.12-slim
+    command: ["python", "-c", "import http.server as h\nclass H(h.BaseHTTPRequestHandler):\n  def do_POST(s):\n    n=int(s.headers['Content-Length']); print(s.path, s.rfile.read(n).decode(), flush=True); s.send_response(200); s.end_headers()\nh.HTTPServer(('0.0.0.0',8099),H).serve_forever()"]
+
+  grafana:
+    image: grafana/grafana:11.3.0
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports: ["3000:3000"]

@@ -1,0 +1,62 @@
+# promtool unit tests: `promtool test rules orders-slo.rules.test.yml`
+rule_files:
+  - orders-slo.rules.yml
+
+evaluation_interval: 30s
+
+tests:
+  # 10% of requests fail for 70 minutes: fast burn must page.
+  - interval: 1m
+    input_series:
+      - series: 'http_requests_total{route="/api/orders",code="200"}'
+        values: '0+900x70'
+      - series: 'http_requests_total{route="/api/orders",code="500"}'
+        values: '0+100x70'
+      - series: 'up{job="orders"}'
+        values: '1x70'
+    alert_rule_test:
+      - eval_time: 65m
+        alertname: OrdersErrorBudgetFastBurn
+        exp_alerts:
+          - exp_labels:
+              severity: page
+              service: orders
+            exp_annotations:
+              summary: "Orders API is burning error budget 14x faster than allowed"
+              description: "At this rate 2% of the 30-day budget is gone within an hour."
+              runbook_url: "https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/blob/main/demos/sre-observability/runbooks/error-budget-burn.md"
+      - eval_time: 65m
+        alertname: OrdersTargetDown
+        exp_alerts: []
+
+  # Healthy traffic (0.1% errors): nothing fires.
+  - interval: 1m
+    input_series:
+      - series: 'http_requests_total{route="/api/orders",code="200"}'
+        values: '0+999x70'
+      - series: 'http_requests_total{route="/api/orders",code="500"}'
+        values: '0+1x70'
+    alert_rule_test:
+      - eval_time: 65m
+        alertname: OrdersErrorBudgetFastBurn
+        exp_alerts: []
+      - eval_time: 65m
+        alertname: OrdersErrorBudgetSlowBurn
+        exp_alerts: []
+
+  # Scrape target disappears.
+  - interval: 1m
+    input_series:
+      - series: 'up{job="orders"}'
+        values: '1 1 0 0 0 0'
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: OrdersTargetDown
+        exp_alerts:
+          - exp_labels:
+              severity: page
+              service: orders
+              job: orders
+            exp_annotations:
+              summary: "Prometheus cannot scrape the orders service"
+              runbook_url: "https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/blob/main/demos/sre-observability/runbooks/error-budget-burn.md"
