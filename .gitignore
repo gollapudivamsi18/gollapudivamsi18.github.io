@@ -1,0 +1,10 @@
+# Python caches and local test output
+__pycache__/
+*.pyc
+.coverage
+coverage.xml
+# Generated synthetic data (recreate with demos/sre-observability/data/generate.py)
+demos/sre-observability/data/sample-requests.csv
+# Local screenshots from the responsive test
+tests/screenshots/
+node_modules/
