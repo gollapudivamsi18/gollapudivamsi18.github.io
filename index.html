@@ -3,348 +3,249 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vamsikrishna Gollapudi | Azure DevOps Engineer with SRE</title>
-<meta name="description" content="Portfolio of Vamsikrishna Gollapudi: Azure DevOps Engineer with SRE (Site Reliability Engineering), Azure Infrastructure, Windows and Linux Administration. Open to fully remote roles only.">
-<meta property="og:title" content="Vamsikrishna Gollapudi | Azure DevOps Engineer with SRE">
-<meta property="og:description" content="Azure DevOps, SRE and Azure Infrastructure portfolio with five independent demos. Open to fully remote roles only.">
-<style>
-:root{--ink:#14213D;--muted:#45526B;--navy:#1A2A4E;--teal:#16666A;--line:#D9E0EA;--bg:#F6F8FB;--card:#fff;--warn:#8A5A00}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:17px;line-height:1.6}
-a{color:var(--teal);text-underline-offset:3px}
-a:focus-visible,button:focus-visible{outline:3px solid #F6AD55;outline-offset:2px}
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
-header.top{background:var(--navy);color:#fff}
-header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;flex-wrap:wrap}
-header.top a{color:#fff;text-decoration:none;font-weight:600}
-header.top nav{display:flex;gap:18px;flex-wrap:wrap}
-header.top nav a{opacity:.92}
-header.top nav a:hover{opacity:1;text-decoration:underline}
-.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);grid-template-areas:"intro diagram" "timeline diagram";gap:20px 40px;padding:28px 0 24px;align-items:start}
-.intro{grid-area:intro}.diagram{grid-area:diagram}.timeline{grid-area:timeline}
-h1{font-size:2.1rem;line-height:1.15;margin:0 0 6px;letter-spacing:-.01em}
-.headline{font-size:1.05rem;font-weight:600;color:var(--teal);margin:0 0 10px}
-.badge{display:inline-block;background:#E6F4EA;color:#1E5631;border:1px solid #9AD0A8;border-radius:999px;padding:4px 14px;font-weight:700;font-size:.95rem}
-.badge-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 12px}
-.voice{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
-.voice-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-button{font:inherit;cursor:pointer;border-radius:8px;border:2px solid var(--navy);background:var(--navy);color:#fff;padding:8px 16px;font-weight:700}
-button.secondary{background:#fff;color:var(--navy)}
-button[disabled]{opacity:.5;cursor:not-allowed}
-.status{font-size:.92rem;color:var(--muted)}
-details.tbox{margin-top:8px}
-details.tbox summary{cursor:pointer;font-weight:600;color:var(--teal)}
-.transcript{margin:8px 0 0;font-size:.98rem;color:var(--ink);border-left:4px solid var(--teal);padding:2px 0 2px 12px}
-audio{width:100%;margin-top:10px}
-figure{margin:0}
-.diagram figure{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
-.diagram img{width:100%;height:auto;display:block}
-figcaption{font-size:.95rem;color:var(--muted);margin-top:10px}
-figcaption a{font-weight:600}
-h2{font-size:1.6rem;margin:0 0 6px}
-h3{font-size:1.12rem;margin:0 0 4px}
-.timeline h2{font-size:1.3rem}
-.tl{list-style:none;margin:10px 0 0;padding:0;border-left:3px solid var(--line)}
-.tl li{position:relative;padding:0 0 14px 20px}
-.tl li::before{content:"";position:absolute;left:-8px;top:7px;width:13px;height:13px;border-radius:50%;background:var(--teal);border:2px solid #fff}
-.tl .role{font-weight:700}
-.tl .org{font-weight:600;color:var(--navy)}
-.tl .meta{font-size:.92rem;color:var(--muted)}
-section.block{padding:34px 0;border-top:1px solid var(--line)}
-.lead{color:var(--muted);margin:0 0 18px;max-width:780px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column}
-.card img{width:100%;height:190px;object-fit:contain;background:#fff;border:1px solid #EDF2F7;border-radius:8px;margin-bottom:12px}
-.tag{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--warn);background:#FFF6E5;border:1px solid #F0C36D;border-radius:6px;padding:2px 8px;margin-bottom:8px;align-self:flex-start}
-.card p{margin:4px 0 10px;font-size:.98rem}
-.card ul{margin:0 0 12px;padding-left:18px;font-size:.95rem}
-.card .links{margin-top:auto;display:flex;gap:14px;flex-wrap:wrap;font-weight:600}
-.shots{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.shots figure{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
-.shots img{width:100%;height:auto;display:block}
-.guide{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-.guide article{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
-.guide ul{margin:6px 0 8px;padding-left:18px;font-size:.95rem}
-.guide .see{font-size:.92rem;font-weight:600}
-.skills{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none;margin:0}
-.skills li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.93rem}
-footer{background:var(--navy);color:#E2E8F0;padding:22px 0;font-size:.92rem}
-footer a{color:#fff}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media (max-width:900px){
-  .hero{grid-template-columns:1fr;grid-template-areas:"intro" "diagram" "timeline";padding-top:24px}
-  h1{font-size:1.9rem}
-  .shots{grid-template-columns:1fr}
-}
-@media (max-width:480px){body{font-size:16px}.wrap{padding:0 14px}header.top nav{gap:12px;font-size:.95rem}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-</style>
+<title>Vamsikrishna Gollapudi | Azure DevOps and SRE</title>
+<meta name="description" content="Vamsikrishna Gollapudi: Azure DevOps Engineer and Site Reliability Engineer with 9+ years in IT. Azure infrastructure, Terraform, AKS, CI/CD and SRE. Open to 100% remote roles only.">
+<link rel="canonical" href="https://gollapudivamsi18.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gollapudivamsi18.github.io/">
+<meta property="og:title" content="Vamsikrishna Gollapudi | Azure DevOps and SRE">
+<meta property="og:description" content="Azure DevOps, SRE and Azure infrastructure portfolio with eight tested demos. 100% remote roles only.">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#13213d">
+<link rel="stylesheet" href="assets/css/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Vamsikrishna Gollapudi","jobTitle":"Site Reliability Engineer","url":"https://gollapudivamsi18.github.io/","address":{"@type":"PostalAddress","addressLocality":"Bengaluru","addressCountry":"IN"},"sameAs":["https://www.linkedin.com/in/vamsikrishna-gollapudi","https://github.com/gollapudivamsi18"],"knowsAbout":["Azure DevOps","Site Reliability Engineering","Microsoft Azure","Terraform","Kubernetes","Azure Kubernetes Service","Windows Server","Linux"]}
+</script>
 </head>
 <body>
-<a class="sr-only" href="#main">Skip to content</a>
-<header class="top">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
   <div class="wrap">
-    <a href="#top">Vamsikrishna Gollapudi</a>
-    <nav aria-label="Main">
-      <a href="#demos">Demos</a>
-      <a href="#guide">Azure guide</a>
+    <a class="brand" href="./">Vamsikrishna Gollapudi</a>
+    <button class="menu-btn ghost" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <a href="#expertise">Expertise</a>
       <a href="#experience">Experience</a>
+      <a href="projects.html">Projects</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#assistant-section">Assistant</a>
       <a href="resume.html">Resume</a>
-      <a href="https://github.com/gollapudivamsi18">GitHub</a>
+      <a href="#contact">Contact</a>
     </nav>
   </div>
 </header>
 
 <main id="main">
-<div class="wrap">
-  <div class="hero" id="top">
-    <section class="intro" aria-labelledby="name">
+<section class="hero" aria-labelledby="name">
+  <div class="wrap">
+    <div>
       <h1 id="name">Vamsikrishna Gollapudi</h1>
-      <p class="headline">Azure DevOps Engineer with SRE (Site Reliability Engineering) | Azure Infrastructure | Windows &amp; Linux Administration</p>
-      <p>I'm an Azure DevOps Engineer and Site Reliability Engineer with 9+ years of IT experience. I started in Linux and Windows administration and moved into Azure infrastructure, CI/CD pipelines, Kubernetes (AKS) and reliability work for life sciences, banking and asset-management clients. I value pipelines teams can trust, clear runbooks and calm incident handling.</p>
-      <p class="badge-row"><span class="badge">Open to fully remote roles only</span> <span class="status">Based in India · Notice period: 15 days</span></p>
-
-      <div class="voice" aria-labelledby="voice-title">
-        <h2 id="voice-title" class="sr-only">Voice introduction</h2>
-        <div class="voice-row">
-          <button id="voiceBtn" type="button" aria-controls="transcript">&#9654; Play voice introduction</button>
-          <button id="stopBtn" type="button" class="secondary" disabled>Stop</button>
-          <span id="voiceStatus" class="status" role="status" aria-live="polite"></span>
-        </div>
-        <audio id="introAudio" controls preload="none" hidden></audio>
-        <div class="voice-row" id="fallbackRow" hidden style="margin-top:8px">
-          <button id="anyVoiceBtn" type="button" class="secondary">Play with default English voice</button>
-        </div>
-        <details class="tbox" id="transcriptBox"><summary>Transcript of the voice introduction</summary><p class="transcript" id="transcript">Hi, I’m Vamsikrishna Gollapudi. I work in Azure DevOps and Site Reliability Engineering. My background includes Azure infrastructure, CI/CD pipelines, Kubernetes, and Windows and Linux administration. I started in systems administration and moved into cloud infrastructure, automation and reliability. In this portfolio, you can explore practical demos on Azure deployments, monitoring, migration and server patching. I’m based in India and currently looking for fully remote roles only. Thanks for visiting.</p></details>
+      <p class="role">Azure DevOps Engineer and Site Reliability Engineer</p>
+      <ul class="availability" aria-label="Availability">
+        <li class="chip remote">100% remote roles only</li>
+        <li class="chip">Notice period: 15 days</li>
+        <li class="chip">Bengaluru, India</li>
+      </ul>
+      <p>I build and run Azure platforms: CI/CD pipelines, Terraform and Bicep, AKS, and the monitoring and incident practice that keeps them reliable. 9+ years in IT, starting in Windows and Linux server administration.</p>
+      <div class="actions">
+        <a class="btn" href="projects.html">See the projects</a>
+        <a class="btn ghost" href="#assistant-section">Ask the AI assistant</a>
+        <a class="btn ghost" href="resume.html">View resume</a>
       </div>
-    </section>
-
-    <section class="diagram" aria-labelledby="featured-title">
-      <h2 id="featured-title" class="sr-only">Featured demo</h2>
-      <figure>
-        <a href="assets/img/aks-sre-architecture.svg" title="Open larger view"><picture><source media="(max-width: 600px)" srcset="assets/img/aks-sre-architecture-mobile.svg"><img src="assets/img/aks-sre-architecture.svg" width="560" height="650" alt="Architecture of the AKS and Helm SRE demo: pull request, CI checks in Azure Pipelines, container registry, AKS staging, approval gate, AKS production with NGINX ingress and autoscaled pods, monitoring with Prometheus and Azure Monitor, and an SLO burn-rate alert linked to a runbook."></picture></a>
-        <figcaption><strong>Featured demo: AKS + Helm delivery with SRE practices.</strong> A pull request goes through CI checks, staging and an approval gate before production; an example 99.5% SLO and burn-rate alerts lead to an incident runbook. <a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/aks-helm-sre">View the project</a> · <a href="assets/img/aks-sre-architecture.svg">Open larger view</a></figcaption>
-      </figure>
-    </section>
-
-    <section class="timeline" id="experience" aria-labelledby="exp-title">
-      <h2 id="exp-title">Experience timeline</h2>
-      <ol class="tl">
-        <li><span class="role">Site Reliability Engineer</span><br><span class="org">Nexamatic Software Solutions Pvt Ltd</span><br><span class="meta">Jan 2025 – Present · Bengaluru · Life sciences</span></li>
-        <li><span class="role">Azure DevOps Engineer</span><br><span class="org">Kumaran Systems</span><br><span class="meta">Apr 2024 – Jan 2025 · Bengaluru · Banking</span></li>
-        <li><span class="role">Cloud Infrastructure Engineer</span><br><span class="org">UST Global</span><br><span class="meta">May 2022 – Jun 2023 · Hyderabad · Asset management</span></li>
-        <li><span class="role">Tech Lead</span><br><span class="org">Cognizant</span><br><span class="meta">Dec 2020 – Apr 2021 · India · Life sciences</span></li>
-        <li><span class="role">System Administrator (Linux &amp; Windows)</span><br><span class="org">Anewa Engineering Pvt. Ltd.</span><br><span class="meta">Oct 2015 – Dec 2020 · India</span></li>
-      </ol>
-      <p class="status">Full details: <a href="resume.html">view resume</a> (view only).</p>
-    </section>
+    </div>
+    <div class="facts" aria-label="Key facts">
+      <dl>
+        <dt>Now</dt><dd>Site Reliability Engineer, Nexamatic</dd>
+        <dt>Platform</dt><dd>Azure landing zone: 8 subscriptions, 600+ resources, 99.95% availability</dd>
+        <dt>Kubernetes</dt><dd>6 production AKS clusters, 180+ nodes</dd>
+        <dt>Reliability</dt><dd>MTTR down ~35%, alert noise down 40%</dd>
+        <dt>Certified</dt><dd>AZ-104 · AZ-900 · KCNA</dd>
+      </dl>
+    </div>
   </div>
+</section>
 
-  <section class="block" aria-labelledby="shots-title">
-    <h2 id="shots-title">From the featured demo</h2>
-    <p class="lead">Illustrations drawn from the demo's pipeline and SLO files, using synthetic data.</p>
-    <div class="shots">
-      <figure>
-        <a href="assets/img/pipeline-run.svg"><img src="assets/img/pipeline-run.svg" width="820" height="380" loading="lazy" alt="Sample pipeline run: CI stage succeeded (unit tests, helm lint, image build, image scan with zero critical findings, push), staging succeeded (helm upgrade and smoke test), production waiting for approval."></a>
-        <figcaption>Sample pipeline run: production waits at the approval gate after staging passes. <a href="assets/img/pipeline-run.svg">Larger view</a></figcaption>
-      </figure>
-      <figure>
-        <a href="assets/img/slo-dashboard.svg"><img src="assets/img/slo-dashboard.svg" width="820" height="400" loading="lazy" alt="Sample SLO monitoring view: availability 99.71 percent against a 99.5 percent target, 42 percent error budget left, p95 latency 182 ms, burn rate 0.6x, and a 7-day error-ratio chart with one spike above the threshold after a deployment that was rolled back."></a>
-        <figcaption>Sample monitoring view: SLO, error budget and burn rate on one screen. <a href="assets/img/slo-dashboard.svg">Larger view</a></figcaption>
-      </figure>
-    </div>
-  </section>
+<section class="block" id="about" aria-labelledby="about-title">
+  <div class="wrap prose">
+    <p class="eyebrow">About</p>
+    <h2 id="about-title">From server rooms to Azure platforms</h2>
+    <p>I spent my first five years administering RHEL, Ubuntu and Windows Server systems: Active Directory, patching and troubleshooting. That background still shapes how I work in the cloud. I want infrastructure in code, pipelines that teams trust, and alerts that only page someone when users are affected.</p>
+    <p>Since then I have led on-premises-to-Azure migrations, built release pipelines for banking services, and now run reliability for life-sciences platforms on Azure and AKS. I write things down: runbooks, architecture notes and blameless incident reviews.</p>
+    <p>I am looking for <strong>fully remote</strong> Azure DevOps, SRE or Azure infrastructure roles: remote from India, or international roles that hire from India. I am not considering hybrid or office-based roles.</p>
+  </div>
+</section>
 
-  <section class="block" id="demos" aria-labelledby="demos-title">
-    <h2 id="demos-title">Portfolio demos</h2>
-    <p class="lead">Five independent portfolio demos built on fictional systems, synthetic data and original example files. They are separate from my employment history above and use no client assets or production configuration.</p>
-    <div class="grid">
+<section class="block" id="expertise" aria-labelledby="expertise-title">
+  <div class="wrap">
+    <p class="eyebrow">Technical expertise</p>
+    <h2 id="expertise-title">What I work on, in order of focus</h2>
+    <div class="grid four">
       <article class="card">
-        <span class="tag">Independent portfolio demo</span>
-        <img src="assets/img/aks-sre-architecture.svg" loading="lazy" alt="AKS and Helm SRE demo architecture diagram">
-        <h3>AKS + Helm delivery with SRE</h3>
-        <p>Experience area: healthcare and life sciences SRE.</p>
-        <ul><li>Helm chart with probes, HPA and PDB</li><li>CI checks, staging, approved production</li><li>99.5% SLO, burn-rate alerts, incident runbook</li></ul>
-        <div class="links"><a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/aks-helm-sre">Project</a><a href="assets/img/aks-sre-architecture.svg">Diagram</a></div>
+        <span class="rank">01</span>
+        <h3>Azure DevOps and SRE</h3>
+        <p>Multi-stage YAML pipelines, GitHub Actions, approvals and rollback. SLIs, SLOs, burn-rate alerting, on-call and incident reviews.</p>
+        <ul class="tags"><li>Azure Pipelines</li><li>GitHub Actions</li><li>GitHub Enterprise</li><li>Terraform</li><li>Bicep</li><li>AKS</li><li>Helm</li><li>Prometheus</li><li>Grafana</li><li>Azure Monitor</li><li>KQL</li><li>Splunk</li></ul>
       </article>
       <article class="card">
-        <span class="tag">Independent portfolio demo</span>
-        <img src="assets/img/banking-pipeline.svg" loading="lazy" alt="Banking transaction API pipeline workflow diagram">
-        <h3>Azure Pipelines for a Transaction API</h3>
-        <p>Experience area: banking DevOps.</p>
-        <ul><li>PR checks and branch policy</li><li>Dev → UAT → Prod with one package</li><li>Approval point and rollback steps</li></ul>
-        <div class="links"><a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/banking-pipeline">Project</a><a href="assets/img/banking-pipeline.svg">Diagram</a></div>
+        <span class="rank">02</span>
+        <h3>Azure cloud infrastructure</h3>
+        <p>Landing zones, hub-and-spoke networking, identity and governance, security posture, migration and disaster recovery.</p>
+        <ul class="tags"><li>Azure networking</li><li>Entra ID</li><li>RBAC</li><li>Azure Policy</li><li>Key Vault</li><li>Defender for Cloud</li><li>Azure Migrate</li><li>Site Recovery</li><li>Azure Backup</li><li>ARM</li></ul>
       </article>
       <article class="card">
-        <span class="tag">Independent portfolio demo</span>
-        <img src="assets/img/hub-spoke.svg" loading="lazy" alt="Hub-and-spoke Azure network diagram">
-        <h3>Terraform hub-and-spoke for asset management</h3>
-        <p>Experience area: financial services cloud infrastructure.</p>
-        <ul><li>Hub, spokes, NSGs, peering, private DNS</li><li>Standard tags on every resource</li><li>Backup, DR design and cost levers</li></ul>
-        <div class="links"><a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/terraform-hub-spoke">Project</a><a href="assets/img/hub-spoke.svg">Diagram</a></div>
+        <span class="rank">03</span>
+        <h3>Windows Server administration</h3>
+        <p>Active Directory, Group Policy, DNS and DHCP, patching and upgrades, with PowerShell for anything done twice.</p>
+        <ul class="tags"><li>Windows Server</li><li>Active Directory</li><li>Group Policy</li><li>WSUS</li><li>PowerShell</li></ul>
       </article>
       <article class="card">
-        <span class="tag">Independent portfolio demo</span>
-        <img src="assets/img/migration-waves.svg" loading="lazy" alt="Migration dependency map and wave plan diagram">
-        <h3>Windows and Linux migration plan to Azure</h3>
-        <p>Experience area: life sciences migration.</p>
-        <ul><li>Sample inventory and dependency map</li><li>Script that plans migration waves</li><li>Cutover checks and rollback runbook</li></ul>
-        <div class="links"><a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/migration-plan">Project</a><a href="assets/img/migration-waves.svg">Diagram</a></div>
-      </article>
-      <article class="card">
-        <span class="tag">Independent portfolio demo</span>
-        <img src="assets/img/patching-flow.svg" loading="lazy" alt="Patching lab workflow diagram">
-        <h3>Patching and OS upgrade lab</h3>
-        <p>Experience area: Windows and Linux administration.</p>
-        <ul><li>PowerShell and Bash pre- and post-checks</li><li>dnf/yum/apt patching with dry run</li><li>Sample patch compliance report</li></ul>
-        <div class="links"><a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/patching-lab">Project</a><a href="assets/img/patching-flow.svg">Diagram</a></div>
+        <span class="rank">04</span>
+        <h3>Linux administration</h3>
+        <p>RHEL and Ubuntu: services, storage, patching, performance troubleshooting and Bash automation.</p>
+        <ul class="tags"><li>RHEL</li><li>Ubuntu</li><li>systemd</li><li>LVM</li><li>Bash</li><li>Python</li></ul>
       </article>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="block" id="guide" aria-labelledby="guide-title">
-    <h2 id="guide-title">Azure Infrastructure Guide</h2>
-    <p class="lead">A compact checklist I follow, with links to the demo that shows each topic.</p>
-    <div class="guide">
-      <article><h3>Landing-zone basics</h3>
-        <ul><li>Management groups and separate subscriptions for platform, shared services and workloads</li><li>Naming standard and mandatory tags from day one</li><li>Azure Policy for allowed regions, tags and SKUs</li></ul>
-        <a class="see" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/blob/main/demos/terraform-hub-spoke/main.tf">See: tags and resource groups in Terraform</a></article>
-      <article><h3>Networking</h3>
-        <ul><li>Hub-and-spoke: shared firewall and gateway in the hub</li><li>Spokes peer only with the hub; NSGs default to deny</li><li>Private endpoints with private DNS zones</li></ul>
-        <a class="see" href="assets/img/hub-spoke.svg">See: hub-and-spoke diagram</a></article>
-      <article><h3>Identity and access</h3>
-        <ul><li>Entra ID groups, not individual role assignments</li><li>Least-privilege RBAC and regular access reviews</li><li>Managed identities and Key Vault instead of secrets in pipelines</li></ul>
-        <a class="see" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/blob/main/demos/banking-pipeline/docs/branch-policy.md">See: approvals and branch policy</a></article>
-      <article><h3>Infrastructure as code</h3>
-        <ul><li>Terraform modules with remote state and locking</li><li><code>fmt</code>, <code>validate</code> and plan review on every pull request</li><li>Drift detection on a schedule</li></ul>
-        <a class="see" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/terraform-hub-spoke">See: Terraform demo with CI validation</a></article>
-      <article><h3>Monitoring</h3>
-        <ul><li>Define SLIs and SLOs before adding alerts</li><li>Alert on error-budget burn rate, not on every spike</li><li>Every paging alert links to a runbook</li></ul>
-        <a class="see" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/blob/main/demos/aks-helm-sre/sre/prometheus-rules.yaml">See: SLO and burn-rate alerts</a></article>
-      <article><h3>Backup and recovery</h3>
-        <ul><li>Set RTO and RPO per tier, then choose Azure Backup or Site Recovery</li><li>Soft delete on, vault access through RBAC</li><li>Test restores and DR failovers on a schedule</li></ul>
-        <a class="see" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/blob/main/demos/terraform-hub-spoke/docs/dr-and-cost.md">See: DR and cost design</a></article>
+<section class="block" id="experience" aria-labelledby="exp-title">
+  <div class="wrap">
+    <p class="eyebrow">Professional experience</p>
+    <h2 id="exp-title">Five roles, 9+ years</h2>
+    <ol class="timeline">
+      <li>
+        <span class="when">Jan 2025 – Present</span>
+        <h3>Site Reliability Engineer</h3>
+        <p class="org">Nexamatic Software Solutions · Bengaluru · Life sciences</p>
+        <ul>
+          <li>Run an 8-subscription Azure landing zone (600+ resources) at 99.95% availability and 6 production AKS clusters.</li>
+          <li>Moved ~120 repositories and 45 teams to GitHub Enterprise; converted 60+ classic releases to GitHub Actions and YAML.</li>
+          <li>Built the SRE practice (SLOs, error budgets, 40+ runbooks): MTTR down ~35%, alert noise down 40%, Secure Score 62% → 85%.</li>
+        </ul>
+      </li>
+      <li>
+        <span class="when">Apr 2024 – Jan 2025</span>
+        <h3>Azure DevOps Engineer</h3>
+        <p class="org">Kumaran Systems · Bengaluru · Banking</p>
+        <ul>
+          <li>Built Azure DevOps pipelines for 35+ services with approval gates and full audit traceability.</li>
+          <li>Introduced Terraform across 4 environments; setup time from ~3 days to 4 hours.</li>
+          <li>Releases from bi-weekly to 3 a week with change-failure rate under 5%.</li>
+        </ul>
+      </li>
+      <li>
+        <span class="when">May 2022 – Jun 2023</span>
+        <h3>Cloud Infrastructure Engineer</h3>
+        <p class="org">UST Global · Hyderabad · Asset management</p>
+        <ul>
+          <li>Rehosted 45 on-premises servers to Azure in 5 waves with zero data loss.</li>
+          <li>Hub-and-spoke networking, Backup and Site Recovery for 60 workloads (4-hour RTO, 15-minute RPO).</li>
+          <li>Cut monthly Azure spend by ~18% through right-sizing.</li>
+        </ul>
+      </li>
+      <li>
+        <span class="when">Dec 2020 – Apr 2021</span>
+        <h3>Tech Lead</h3>
+        <p class="org">Cognizant · India · Life sciences</p>
+        <ul>
+          <li>Led a 5-person team migrating 120 servers to Azure in 6 waves; 98% first-attempt cutover success.</li>
+        </ul>
+      </li>
+      <li>
+        <span class="when">Oct 2015 – Dec 2020</span>
+        <h3>System Administrator (Linux &amp; Windows)</h3>
+        <p class="org">Anewa Engineering · India</p>
+        <ul>
+          <li>Ran 150+ RHEL, Ubuntu and Windows servers for 1,200 users at 99.9% uptime; Active Directory, DNS, DHCP and patching.</li>
+        </ul>
+      </li>
+    </ol>
+    <p><a href="resume.html">Full details on the resume page</a></p>
+  </div>
+</section>
+
+<section class="block" id="projects" aria-labelledby="projects-title">
+  <div class="wrap">
+    <p class="eyebrow">Featured projects</p>
+    <h2 id="projects-title">Eight demos you can run and check</h2>
+    <p class="lead">Each demo is independent work on fictional systems and synthetic data, not client work. None is deployed to a real Azure subscription; each one says exactly how it was tested.</p>
+    <div class="grid three">
+      <article class="card"><span class="label ci">Automated tests</span><h3>GitHub Actions DevSecOps</h3><p>Lint, tests, SAST, secret, dependency and container scanning, SBOM, gated promotion.</p><a class="more" href="projects.html#devsecops">Details and diagram</a></article>
+      <article class="card"><span class="label ci">Automated tests</span><h3>Azure Pipelines for a Transaction API</h3><p>PR checks, Dev → UAT → Prod with one package, approval and rollback.</p><a class="more" href="projects.html#banking-pipeline">Details and diagram</a></article>
+      <article class="card"><span class="label ci">Automated tests</span><h3>SRE observability</h3><p>SLO burn-rate alerts with rule tests, Grafana dashboard, runbook and RCA.</p><a class="more" href="projects.html#sre-observability">Details and diagram</a></article>
+      <article class="card"><span class="label ci">Automated tests</span><h3>AKS + Helm with SRE</h3><p>Helm chart with probes, HPA and PDB; staged delivery with approval.</p><a class="more" href="projects.html#aks-helm-sre">Details and diagram</a></article>
+      <article class="card"><span class="label ci">Automated tests</span><h3>Terraform hub-and-spoke</h3><p>Hub and spokes, NSGs, peering, private DNS, tags, backup and DR notes.</p><a class="more" href="projects.html#terraform-hub-spoke">Details and diagram</a></article>
+      <article class="card"><span class="label ci">Automated tests</span><h3>Migration plan to Azure</h3><p>Inventory, dependency map, wave planner, cutover and rollback runbooks.</p><a class="more" href="projects.html#migration-plan">Details and diagram</a></article>
+      <article class="card"><span class="label ci">Automated tests</span><h3>Windows and Linux ops toolkit</h3><p>Health, patch, AD, SSH and user audits; one safe, allow-listed fix script.</p><a class="more" href="projects.html#server-ops-toolkit">Details and diagram</a></article>
+      <article class="card"><span class="label ci">Automated tests</span><h3>Patching and OS upgrade lab</h3><p>PowerShell and Bash pre/post checks, dry-run patching, compliance report.</p><a class="more" href="projects.html#patching-lab">Details and diagram</a></article>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="block" aria-labelledby="skills-title">
-    <h2 id="skills-title">Core skills</h2>
-    <ul class="skills">
-      <li>Azure DevOps (Pipelines, Repos, Artifacts, Boards)</li><li>Multi-stage YAML pipelines</li><li>GitHub Actions</li><li>Site Reliability Engineering</li><li>SLI/SLO and error budgets</li><li>AKS and Kubernetes</li><li>Helm</li><li>Docker</li><li>Terraform</li><li>Bicep and ARM</li><li>Azure networking</li><li>Entra ID and RBAC</li><li>Azure Monitor and Log Analytics (KQL)</li><li>Prometheus and Grafana</li><li>Azure Migrate and Site Recovery</li><li>Azure Backup</li><li>Windows Server and Active Directory</li><li>Linux (RHEL, Ubuntu)</li><li>PowerShell</li><li>Bash</li><li>Python</li>
+<section class="block" id="certifications" aria-labelledby="cert-title">
+  <div class="wrap">
+    <p class="eyebrow">Certifications</p>
+    <h2 id="cert-title">Certifications</h2>
+    <div class="grid three">
+      <div class="card"><h3>Azure Administrator Associate</h3><p>Microsoft Certified · AZ-104</p></div>
+      <div class="card"><h3>Azure Fundamentals</h3><p>Microsoft Certified · AZ-900</p></div>
+      <div class="card"><h3>Kubernetes and Cloud Native Associate</h3><p>The Linux Foundation · KCNA</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="assistant-section" aria-labelledby="assistant-title">
+  <div class="wrap">
+    <p class="eyebrow">AI assistant</p>
+    <h2 id="assistant-title">Ask about my work</h2>
+    <p class="lead">This assistant is an AI, not me. It answers only from my resume and the project notes, runs entirely in your browser, and keeps nothing after you leave. Voice replies are off until you turn them on; the microphone is used only when you press Speak.</p>
+    <div class="assistant" id="assistant">
+      <div class="assistant-head">
+        <strong>Vamsikrishna's Portfolio AI Assistant</strong>
+        <div class="controls">
+          <button type="button" id="assistant-mute" class="ghost" aria-pressed="false">Voice replies: off</button>
+          <button type="button" id="assistant-stop" class="ghost" disabled>Stop speaking</button>
+          <button type="button" id="assistant-clear" class="ghost">Clear</button>
+        </div>
+      </div>
+      <div class="log" role="log" aria-live="polite" aria-label="Conversation"></div>
+      <div>
+        <form class="composer" autocomplete="off">
+          <label class="sr-only" for="assistant-input">Your question</label>
+          <input id="assistant-input" type="text" placeholder="e.g. What is his SRE experience?" maxlength="300">
+          <button type="button" id="assistant-mic" class="ghost mic" aria-pressed="false">Speak</button>
+          <button type="submit" data-needs-kb disabled><span class="send-label">Send</span><span aria-hidden="true">→</span></button>
+        </form>
+        <p class="assistant-status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="contact" aria-labelledby="contact-title">
+  <div class="wrap prose">
+    <p class="eyebrow">Contact</p>
+    <h2 id="contact-title">Hiring for a fully remote role?</h2>
+    <p>I am available for <strong>100% remote</strong> Azure DevOps, SRE, Azure infrastructure and platform roles, open to candidates based in India. Notice period: 15 days.</p>
+    <ul>
+      <li>LinkedIn: <a href="https://www.linkedin.com/in/vamsikrishna-gollapudi" rel="noopener" target="_blank">linkedin.com/in/vamsikrishna-gollapudi</a></li>
+      <li>GitHub: <a href="https://github.com/gollapudivamsi18" rel="noopener" target="_blank">github.com/gollapudivamsi18</a></li>
+      <li>Email: Gollapudi.vamsi18@gmail.com</li>
+      <li>Naukri: profile shared on request</li>
     </ul>
-    <p class="status" style="margin-top:14px">Certifications: Microsoft Certified Azure Administrator Associate (AZ-104), Azure Fundamentals (AZ-900), Kubernetes and Cloud Native Associate (KCNA).</p>
-  </section>
-
-  <section class="block" id="contact" aria-labelledby="contact-title">
-    <h2 id="contact-title">Contact</h2>
-    <p>Looking for fully remote Azure DevOps, SRE, Azure Infrastructure or Platform Engineer roles, open to candidates based in India.</p>
-    <p>Email: <a href="mailto:Gollapudi.vamsi18@gmail.com">Gollapudi.vamsi18@gmail.com</a> · GitHub: <a href="https://github.com/gollapudivamsi18">github.com/gollapudivamsi18</a></p>
-  </section>
-</div>
+  </div>
+</section>
 </main>
 
-<footer>
-  <div class="wrap">© Vamsikrishna Gollapudi. Demos use fictional systems and synthetic data. <a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io">Source on GitHub</a></div>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© Vamsikrishna Gollapudi. Demos use fictional systems and synthetic data.</span>
+    <a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io">Source on GitHub</a>
+  </div>
 </footer>
 
-<script>
-(function () {
-  var AUDIO_SRC = "assets/audio/intro-en-IN.mp3"; // used automatically if this file exists
-  var btn = document.getElementById("voiceBtn");
-  var stopBtn = document.getElementById("stopBtn");
-  var statusEl = document.getElementById("voiceStatus");
-  var audio = document.getElementById("introAudio");
-  var fallbackRow = document.getElementById("fallbackRow");
-  var anyBtn = document.getElementById("anyVoiceBtn");
-  var text = document.getElementById("transcript").textContent.trim();
-  var tbox = document.getElementById("transcriptBox");
-  var synth = window.speechSynthesis;
-  var mode = null;      // "audio" | "speech" | null
-  var state = "idle";   // idle | playing | paused
-  var useAnyVoice = false;
-
-  function setState(s, msg) {
-    state = s;
-    btn.innerHTML = s === "playing" ? "&#10074;&#10074; Pause" : (s === "paused" ? "&#9654; Resume" : "&#9654; Play voice introduction");
-    stopBtn.disabled = s === "idle";
-    statusEl.textContent = msg || "";
-  }
-
-  function pickVoice() {
-    if (!synth) return null;
-    var voices = synth.getVoices();
-    var exact = voices.filter(function (v) { return /^en[-_]IN$/i.test(v.lang); });
-    if (exact.length) {
-      var natural = exact.filter(function (v) { return /natural|neural|online/i.test(v.name); });
-      return (natural[0] || exact[0]);
-    }
-    if (useAnyVoice) {
-      return voices.filter(function (v) { return /^en/i.test(v.lang); })[0] || null;
-    }
-    return null;
-  }
-
-  function speak() {
-    var voice = pickVoice();
-    if (!voice) {
-      fallbackRow.hidden = false;
-      setState("idle", "No Indian English (en-IN) voice is installed in this browser. Please read the transcript below, or use the default English voice.");
-      return;
-    }
-    synth.cancel();
-    var u = new SpeechSynthesisUtterance(text);
-    u.voice = voice; u.lang = voice.lang; u.rate = 0.95; u.pitch = 1;
-    u.onend = function () { setState("idle", "Finished."); };
-    u.onerror = function () { setState("idle", "Playback stopped. The transcript is below."); };
-    synth.speak(u);
-    tbox.open = true;
-    setState("playing", "Playing (" + voice.name + ")");
-  }
-
-  function probeAudio(done) {
-    if (!window.fetch) return done(false);
-    fetch(AUDIO_SRC, { method: "HEAD" }).then(function (r) { done(r.ok); }).catch(function () { done(false); });
-  }
-
-  probeAudio(function (ok) {
-    if (ok) {
-      mode = "audio";
-      audio.src = AUDIO_SRC;
-      audio.hidden = false;
-      audio.addEventListener("play", function () { tbox.open = true; setState("playing", "Playing"); });
-      audio.addEventListener("pause", function () { if (!audio.ended) setState("paused", "Paused"); });
-      audio.addEventListener("ended", function () { setState("idle", "Finished."); });
-    } else if (synth && window.SpeechSynthesisUtterance) {
-      mode = "speech";
-      synth.getVoices();
-      if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = function () {};
-    } else {
-      btn.disabled = true;
-      statusEl.textContent = "Voice playback is not supported in this browser. Please read the transcript below.";
-    }
-  });
-
-  btn.addEventListener("click", function () {
-    if (mode === "audio") {
-      if (audio.paused) audio.play(); else audio.pause();
-      return;
-    }
-    if (mode !== "speech") return;
-    if (state === "playing") { synth.pause(); setState("paused", "Paused"); }
-    else if (state === "paused") { synth.resume(); setState("playing", "Playing"); }
-    else speak();
-  });
-
-  stopBtn.addEventListener("click", function () {
-    if (mode === "audio") { audio.pause(); audio.currentTime = 0; }
-    else if (synth) synth.cancel();
-    setState("idle", "Stopped.");
-  });
-
-  anyBtn.addEventListener("click", function () { useAnyVoice = true; fallbackRow.hidden = true; speak(); });
-})();
-</script>
+<script src="assets/js/site.js" defer></script>
+<script src="assets/js/assistant-core.js" defer></script>
+<script src="assets/js/assistant-ui.js" defer></script>
 </body>
 </html>
