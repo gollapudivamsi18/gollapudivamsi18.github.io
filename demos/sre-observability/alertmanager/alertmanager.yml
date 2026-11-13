@@ -1,0 +1,29 @@
+# Alertmanager routing for the demo. Pages and tickets go to separate receivers.
+# The receivers post to a local webhook placeholder; in a real setup they would
+# be PagerDuty/Opsgenie (page) and Azure DevOps Boards or Jira (ticket).
+route:
+  receiver: ticket-queue
+  group_by: [alertname, service]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  routes:
+    - matchers: ['severity="page"']
+      receiver: on-call-pager
+      repeat_interval: 1h
+
+inhibit_rules:
+  # If the target is down, the burn-rate alerts are noise.
+  - source_matchers: ['alertname="OrdersTargetDown"']
+    target_matchers: ['alertname=~"OrdersErrorBudget.*"']
+    equal: [service]
+
+receivers:
+  - name: on-call-pager
+    webhook_configs:
+      - url: http://webhook-sink:8099/page
+        send_resolved: true
+  - name: ticket-queue
+    webhook_configs:
+      - url: http://webhook-sink:8099/ticket
+        send_resolved: true
