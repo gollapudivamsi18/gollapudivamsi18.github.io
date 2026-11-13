@@ -1,0 +1,88 @@
+name: Validate demos
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: AKS demo app tests
+        run: cd demos/aks-helm-sre/app && python -m unittest -v
+      - name: Banking pipeline tests
+        run: python -m unittest discover -s demos/banking-pipeline/tests -v
+      - name: Migration wave planner tests
+        run: cd demos/migration-plan/scripts && python -m unittest -v
+      - name: Patch report tests
+        run: cd demos/patching-lab/report && python -m unittest -v
+      - name: Parse all YAML files
+        run: |
+          pip install --quiet pyyaml
+          python - <<'EOF'
+          import pathlib, sys, yaml
+          bad = 0
+          for p in pathlib.Path('.').rglob('*.y*ml'):
+              if 'templates' in p.parts and 'chart' in p.parts:
+                  continue  # Helm templates are checked by helm lint
+              try:
+                  list(yaml.safe_load_all(p.read_text()))
+              except Exception as e:
+                  print(f'{p}: {e}'); bad += 1
+          sys.exit(bad)
+          EOF
+
+  helm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+      - name: Lint and render chart
+        run: |
+          helm lint demos/aks-helm-sre/chart/clinic-slots
+          helm template demo demos/aks-helm-sre/chart/clinic-slots \
+            -f demos/aks-helm-sre/chart/clinic-slots/values-prod.yaml > /dev/null
+      - name: Smoke test the app locally
+        run: |
+          cd demos/aks-helm-sre/app && (python3 app.py &) && sleep 2
+          bash ../sre/smoke-test.sh http://localhost:8080
+
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demos/terraform-hub-spoke
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform fmt -check -diff -recursive
+      - run: terraform init -backend=false -input=false
+      - run: terraform validate
+
+  scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck
+        run: shellcheck demos/patching-lab/linux/*.sh demos/aks-helm-sre/sre/*.sh
+      - name: Linux patch scripts (dry run)
+        run: |
+          bash demos/patching-lab/linux/precheck.sh /tmp/patchlab
+          sudo bash demos/patching-lab/linux/patch.sh --dry-run
+          bash demos/patching-lab/linux/postcheck.sh /tmp/patchlab
+      - name: PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+          $r = Invoke-ScriptAnalyzer -Path demos/patching-lab/windows -Severity Error
+          $r | Format-Table
+          if ($r) { exit 1 }
