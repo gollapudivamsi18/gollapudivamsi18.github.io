@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 742" role="img" aria-labelledby="t d">
+<title id="t">AKS and Helm delivery with SRE practices - demo architecture (phone view)</title><desc id="d">Pull request, CI checks, container registry, AKS staging, approval gate, AKS production with ingress and autoscaled pods, monitoring, SLO burn-rate alert and incident runbook.</desc>
+<style>text{font-family:'Segoe UI',Roboto,'Noto Sans',Arial,sans-serif;fill:#14213D} .t{font-size:17px;font-weight:700} .s{font-size:13.5px;fill:#4A5568} .n{font-size:13px;font-weight:700;fill:#fff} .w{fill:#fff} .h{font-size:20px;font-weight:700}</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1A2A4E"/></marker></defs>
+<rect width="360" height="742" fill="#fff"/>
+<rect x="10" y="12" width="340" height="64" rx="10" fill="#EEF4F7" stroke="#1C6F73" stroke-width="2"/>
+<circle cx="32" cy="44.0" r="13" fill="#1A2A4E"/><text class="n" x="32" y="48.5" text-anchor="middle">1</text>
+<text class="t" x="54" y="41.0">Pull request</text><text class="s" x="54" y="60.0">branch policy · code review</text>
+<line x1="180" y1="76" x2="180" y2="100" stroke="#1A2A4E" stroke-width="2.2" marker-end="url(#a)"/>
+<rect x="10" y="102" width="340" height="64" rx="10" fill="#EEF4F7" stroke="#1C6F73" stroke-width="2"/>
+<circle cx="32" cy="134.0" r="13" fill="#1A2A4E"/><text class="n" x="32" y="138.5" text-anchor="middle">2</text>
+<text class="t" x="54" y="131.0">CI checks</text><text class="s" x="54" y="150.0">tests · helm lint · image scan</text>
+<line x1="180" y1="166" x2="180" y2="190" stroke="#1A2A4E" stroke-width="2.2" marker-end="url(#a)"/>
+<rect x="10" y="192" width="340" height="64" rx="10" fill="#EEF4F7" stroke="#1C6F73" stroke-width="2"/>
+<circle cx="32" cy="224.0" r="13" fill="#1A2A4E"/><text class="n" x="32" y="228.5" text-anchor="middle">3</text>
+<text class="t" x="54" y="221.0">Container registry</text><text class="s" x="54" y="240.0">versioned image per build</text>
+<line x1="180" y1="256" x2="180" y2="280" stroke="#1A2A4E" stroke-width="2.2" marker-end="url(#a)"/>
+<rect x="10" y="282" width="340" height="64" rx="10" fill="#EEF4F7" stroke="#1C6F73" stroke-width="2"/>
+<circle cx="32" cy="314.0" r="13" fill="#1A2A4E"/><text class="n" x="32" y="318.5" text-anchor="middle">4</text>
+<text class="t" x="54" y="311.0">AKS staging</text><text class="s" x="54" y="330.0">helm upgrade --atomic</text>
+<line x1="180" y1="346" x2="180" y2="370" stroke="#1A2A4E" stroke-width="2.2" marker-end="url(#a)"/>
+<rect x="10" y="372" width="340" height="64" rx="10" fill="#FFF6E5" stroke="#B7791F" stroke-width="2"/>
+<circle cx="32" cy="404.0" r="13" fill="#1A2A4E"/><text class="n" x="32" y="408.5" text-anchor="middle">5</text>
+<text class="t" x="54" y="401.0">Approval gate</text><text class="s" x="54" y="420.0">prod environment check</text>
+<line x1="180" y1="436" x2="180" y2="460" stroke="#1A2A4E" stroke-width="2.2" marker-end="url(#a)"/>
+<rect x="10" y="462" width="340" height="64" rx="10" fill="#F4F7FB" stroke="#1A2A4E" stroke-width="2"/>
+<circle cx="32" cy="494.0" r="13" fill="#1A2A4E"/><text class="n" x="32" y="498.5" text-anchor="middle">6</text>
+<text class="t" x="54" y="491.0">AKS production</text><text class="s" x="54" y="510.0">ingress · pods with HPA and PDB</text>
+<line x1="180" y1="526" x2="180" y2="550" stroke="#1A2A4E" stroke-width="2.2" marker-end="url(#a)"/>
+<rect x="10" y="552" width="340" height="64" rx="10" fill="#EEF4F7" stroke="#1C6F73" stroke-width="2"/>
+<circle cx="32" cy="584.0" r="13" fill="#1A2A4E"/><text class="n" x="32" y="588.5" text-anchor="middle">7</text>
+<text class="t" x="54" y="581.0">Monitoring</text><text class="s" x="54" y="600.0">Prometheus · Azure Monitor</text>
+<line x1="180" y1="616" x2="180" y2="640" stroke="#1A2A4E" stroke-width="2.2" marker-end="url(#a)"/>
+<rect x="10" y="642" width="340" height="64" rx="10" fill="#FDECEC" stroke="#C53030" stroke-width="2"/>
+<circle cx="32" cy="674.0" r="13" fill="#1A2A4E"/><text class="n" x="32" y="678.5" text-anchor="middle">8</text>
+<text class="t" x="54" y="671.0">SLO 99.5% alert</text><text class="s" x="54" y="690.0">burn rate -&gt; incident runbook</text>
+<text class="s" x="180" y="740" text-anchor="middle" >Independent portfolio demo · synthetic data</text>
+</svg>
