@@ -23,6 +23,11 @@ fi
 IFS=',' read -r -a services <<< "$(get running_services)"
 for svc in "${services[@]}"; do
   [[ -z "$svc" ]] && continue
+  # Socket- or timer-activated services (snapd, for example) stop on their own
+  # when idle, so "not running now" is expected for them and not a regression.
+  if [[ -n "$(systemctl show -p TriggeredBy --value "$svc" 2>/dev/null)" ]]; then
+    echo "SKIP: $svc is socket/timer activated"; continue
+  fi
   if ! systemctl is-active --quiet "$svc"; then
     echo "FAIL: $svc was running before patching and is not running now"; status=1
   fi
