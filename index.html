@@ -10,6 +10,7 @@
 <style>
 :root{--ink:#14213D;--muted:#45526B;--navy:#1A2A4E;--teal:#16666A;--line:#D9E0EA;--bg:#F6F8FB;--card:#fff;--warn:#8A5A00}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:17px;line-height:1.6}
 a{color:var(--teal);text-underline-offset:3px}
@@ -21,19 +22,21 @@ header.top a{color:#fff;text-decoration:none;font-weight:600}
 header.top nav{display:flex;gap:18px;flex-wrap:wrap}
 header.top nav a{opacity:.92}
 header.top nav a:hover{opacity:1;text-decoration:underline}
-.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);grid-template-areas:"intro diagram" "timeline diagram";gap:28px 40px;padding:36px 0 24px;align-items:start}
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);grid-template-areas:"intro diagram" "timeline diagram";gap:20px 40px;padding:28px 0 24px;align-items:start}
 .intro{grid-area:intro}.diagram{grid-area:diagram}.timeline{grid-area:timeline}
-h1{font-size:2.3rem;line-height:1.15;margin:0 0 8px;letter-spacing:-.01em}
-.headline{font-size:1.15rem;font-weight:600;color:var(--teal);margin:0 0 14px}
-.badge{display:inline-block;background:#E6F4EA;color:#1E5631;border:1px solid #9AD0A8;border-radius:999px;padding:4px 14px;font-weight:700;font-size:.95rem;margin:6px 0 14px}
-.voice{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:6px}
+h1{font-size:2.1rem;line-height:1.15;margin:0 0 6px;letter-spacing:-.01em}
+.headline{font-size:1.05rem;font-weight:600;color:var(--teal);margin:0 0 10px}
+.badge{display:inline-block;background:#E6F4EA;color:#1E5631;border:1px solid #9AD0A8;border-radius:999px;padding:4px 14px;font-weight:700;font-size:.95rem}
+.badge-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 12px}
+.voice{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 .voice-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 button{font:inherit;cursor:pointer;border-radius:8px;border:2px solid var(--navy);background:var(--navy);color:#fff;padding:8px 16px;font-weight:700}
 button.secondary{background:#fff;color:var(--navy)}
 button[disabled]{opacity:.5;cursor:not-allowed}
 .status{font-size:.92rem;color:var(--muted)}
-.transcript{margin:10px 0 0;font-size:.98rem;color:var(--ink);border-left:4px solid var(--teal);padding:2px 0 2px 12px}
-.transcript strong{display:block;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+details.tbox{margin-top:8px}
+details.tbox summary{cursor:pointer;font-weight:600;color:var(--teal)}
+.transcript{margin:8px 0 0;font-size:.98rem;color:var(--ink);border-left:4px solid var(--teal);padding:2px 0 2px 12px}
 audio{width:100%;margin-top:10px}
 figure{margin:0}
 .diagram figure{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
@@ -101,8 +104,7 @@ footer a{color:#fff}
       <h1 id="name">Vamsikrishna Gollapudi</h1>
       <p class="headline">Azure DevOps Engineer with SRE (Site Reliability Engineering) | Azure Infrastructure | Windows &amp; Linux Administration</p>
       <p>I'm an Azure DevOps Engineer and Site Reliability Engineer with 9+ years of IT experience. I started as a Linux and Windows system administrator and moved step by step into Azure infrastructure, CI/CD pipelines, Kubernetes (AKS) and reliability work for life sciences, banking and asset-management clients. I like simple pipelines that teams can trust, infrastructure as code, clear runbooks and calm incident handling.</p>
-      <span class="badge">Open to fully remote roles only</span>
-      <span class="status" style="display:block">Based in India · Notice period: 15 days</span>
+      <p class="badge-row"><span class="badge">Open to fully remote roles only</span> <span class="status">Based in India · Notice period: 15 days</span></p>
 
       <div class="voice" aria-labelledby="voice-title">
         <h2 id="voice-title" class="sr-only">Voice introduction</h2>
@@ -115,7 +117,7 @@ footer a{color:#fff}
         <div class="voice-row" id="fallbackRow" hidden style="margin-top:8px">
           <button id="anyVoiceBtn" type="button" class="secondary">Play with default English voice</button>
         </div>
-        <p class="transcript" id="transcript"><strong>Transcript</strong>Hi, I’m Vamsikrishna Gollapudi. I work in Azure DevOps and Site Reliability Engineering. My background includes Azure infrastructure, CI/CD pipelines, Kubernetes, and Windows and Linux administration. I started in systems administration and moved into cloud infrastructure, automation and reliability. In this portfolio, you can explore practical demos on Azure deployments, monitoring, migration and server patching. I’m based in India and currently looking for fully remote roles only. Thanks for visiting.</p>
+        <details class="tbox" id="transcriptBox"><summary>Transcript of the voice introduction</summary><p class="transcript" id="transcript">Hi, I’m Vamsikrishna Gollapudi. I work in Azure DevOps and Site Reliability Engineering. My background includes Azure infrastructure, CI/CD pipelines, Kubernetes, and Windows and Linux administration. I started in systems administration and moved into cloud infrastructure, automation and reliability. In this portfolio, you can explore practical demos on Azure deployments, monitoring, migration and server patching. I’m based in India and currently looking for fully remote roles only. Thanks for visiting.</p></details>
       </div>
     </section>
 
@@ -256,7 +258,8 @@ footer a{color:#fff}
   var audio = document.getElementById("introAudio");
   var fallbackRow = document.getElementById("fallbackRow");
   var anyBtn = document.getElementById("anyVoiceBtn");
-  var text = document.getElementById("transcript").textContent.replace(/^Transcript/, "").trim();
+  var text = document.getElementById("transcript").textContent.trim();
+  var tbox = document.getElementById("transcriptBox");
   var synth = window.speechSynthesis;
   var mode = null;      // "audio" | "speech" | null
   var state = "idle";   // idle | playing | paused
@@ -296,6 +299,7 @@ footer a{color:#fff}
     u.onend = function () { setState("idle", "Finished."); };
     u.onerror = function () { setState("idle", "Playback stopped. The transcript is below."); };
     synth.speak(u);
+    tbox.open = true;
     setState("playing", "Playing (" + voice.name + ")");
   }
 
@@ -309,7 +313,7 @@ footer a{color:#fff}
       mode = "audio";
       audio.src = AUDIO_SRC;
       audio.hidden = false;
-      audio.addEventListener("play", function () { setState("playing", "Playing"); });
+      audio.addEventListener("play", function () { tbox.open = true; setState("playing", "Playing"); });
       audio.addEventListener("pause", function () { if (!audio.ended) setState("paused", "Paused"); });
       audio.addEventListener("ended", function () { setState("idle", "Finished."); });
     } else if (synth && window.SpeechSynthesisUtterance) {
