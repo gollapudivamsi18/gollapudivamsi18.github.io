@@ -15,7 +15,7 @@
 
 ## Not run here (needs CI or real infrastructure)
 - ShellCheck, PSScriptAnalyzer, Pester, promtool, amtool, Trivy, Gitleaks, Ruff, Bandit, pip-audit:
-  run in GitHub Actions once `ci/workflows/` is copied into `.github/workflows/`.
+  run in GitHub Actions; all green on the merged head 5dab2d1 (13 Nov 2026).
 - Docker Compose stack, real AKS/Azure deployments: not run (no registry access / no subscription).
 - Voice input and spoken replies: browser feature; checked for graceful fallback only (headless browser has no microphone).
 

@@ -39,5 +39,9 @@ so a separate private repository is not needed.
 ## D8 — Workflow files are pushed by the owner
 The GitHub connector used by Claude can write repository contents but not files under
 `.github/workflows/` (GitHub requires a separate "workflows" permission). Workflow changes
-are kept under `ci/workflows/` and the owner copies them into `.github/workflows/`
-(instructions in `ci/README.md`).
+were staged under `ci/workflows/`. Resolved 13 Nov 2026: with the owner's permission they were moved
+into `.github/workflows/` through the GitHub web editor in the owner's browser.
+
+## D9 — Third-party actions pinned by commit SHA where tags proved unsafe
+`aquasecurity/trivy-action` is pinned to the v0.36.0 commit SHA. Its unprefixed tags were hijacked
+in March 2026 and later removed, so a tag reference is neither stable nor trustworthy.

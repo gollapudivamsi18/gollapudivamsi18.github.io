@@ -44,8 +44,8 @@ python3 tests/responsive_check.py                  # 7 widths x 3 pages + assist
 python3 -m unittest discover -s demos/server-ops-toolkit/tests
 cd demos/sre-observability/slo && python3 -m unittest
 ```
-CI workflows: `.github/workflows/`. Updated versions waiting to be enabled are in `ci/workflows/`
-(see `ci/README.md`).
+CI workflows: `.github/workflows/` (`validate.yml` for all demos and the site, `devsecops-demo.yml`
+for the DevSecOps pipeline demo).
 
 ## Recovery notes
 Work-in-progress state for future sessions lives in `.project-state/` (requirements, plan,
