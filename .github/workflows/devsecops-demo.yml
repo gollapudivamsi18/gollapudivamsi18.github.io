@@ -112,7 +112,7 @@ jobs:
           test "$(docker inspect -f '{{.Config.User}}' "$IMAGE")" = "10001"
           docker rm -f api
       - name: Trivy report (HIGH and CRITICAL)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0 (SHA-pinned)
         with:
           image-ref: ${{ env.IMAGE }}
           severity: HIGH,CRITICAL
@@ -120,14 +120,14 @@ jobs:
           format: table
           exit-code: "0"
       - name: Trivy gate (fail on fixable CRITICAL)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0 (SHA-pinned)
         with:
           image-ref: ${{ env.IMAGE }}
           severity: CRITICAL
           ignore-unfixed: true
           exit-code: "1"
       - name: SBOM (CycloneDX)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0 (SHA-pinned)
         with:
           image-ref: ${{ env.IMAGE }}
           format: cyclonedx
