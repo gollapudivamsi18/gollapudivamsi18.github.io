@@ -91,6 +91,8 @@ jobs:
       - name: Dependency review (pull requests only)
         if: github.event_name == 'pull_request'
         uses: actions/dependency-review-action@v4
+        # Needs Settings > Code security > Dependency graph; informational until enabled.
+        continue-on-error: true
         with:
           fail-on-severity: high
 
