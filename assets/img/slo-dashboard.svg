@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 400" role="img" aria-labelledby="t d">
+<title id="t">Sample SLO monitoring view for the Clinic Slots demo (illustration)</title><desc id="d">Tiles show 28-day availability 99.71 percent against a 99.5 percent target, 42 percent error budget remaining, p95 latency 182 ms and a 1-hour burn rate of 0.6. A 7-day error ratio chart stays mostly under the alert threshold with one short spike.</desc>
+<style>text{font-family:'Segoe UI',Roboto,'Noto Sans',Arial,sans-serif;fill:#14213D} .t{font-size:17px;font-weight:700} .s{font-size:13.5px;fill:#4A5568} .n{font-size:13px;font-weight:700;fill:#fff} .h{font-size:20px;font-weight:700}</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1A2A4E"/></marker></defs>
+<rect width="820" height="400" fill="#fff"/>
+<rect x="0" y="0" width="820" height="56" fill="#1A2A4E"/>
+<text class="h" x="20" y="35" text-anchor="start" style="fill:#fff">Clinic Slots · SLO overview (last 28 days)</text>
+<rect x="20" y="72" width="184" height="96" rx="10" fill="#F7FAFC" stroke="#CBD5E0"/>
+<text class="s" x="34" y="96" text-anchor="start" >Availability</text>
+<text x="34" y="134" style="font-size:28px;font-weight:700;fill:#2F855A">99.71%</text>
+<text class="s" x="34" y="156" text-anchor="start" >target 99.5%</text>
+<rect x="218" y="72" width="184" height="96" rx="10" fill="#F7FAFC" stroke="#CBD5E0"/>
+<text class="s" x="232" y="96" text-anchor="start" >Error budget left</text>
+<text x="232" y="134" style="font-size:28px;font-weight:700;fill:#2F855A">42%</text>
+<text class="s" x="232" y="156" text-anchor="start" >of 28-day budget</text>
+<rect x="416" y="72" width="184" height="96" rx="10" fill="#F7FAFC" stroke="#CBD5E0"/>
+<text class="s" x="430" y="96" text-anchor="start" >p95 latency</text>
+<text x="430" y="134" style="font-size:28px;font-weight:700;fill:#2F855A">182 ms</text>
+<text class="s" x="430" y="156" text-anchor="start" >objective &lt; 300 ms</text>
+<rect x="614" y="72" width="184" height="96" rx="10" fill="#F7FAFC" stroke="#CBD5E0"/>
+<text class="s" x="628" y="96" text-anchor="start" >Burn rate (1h)</text>
+<text x="628" y="134" style="font-size:28px;font-weight:700;fill:#2F855A">0.6x</text>
+<text class="s" x="628" y="156" text-anchor="start" >page at 14.4x</text>
+<rect x="20" y="182" width="780" height="194" rx="10" fill="#fff" stroke="#CBD5E0"/>
+<text class="t" x="36" y="204" text-anchor="start" >Error ratio, 5-minute rate (7 days)</text>
+<line x1="70" y1="350" x2="780" y2="350" stroke="#EDF2F7"/>
+<text class="s" x="62" y="354" text-anchor="end" >0%</text>
+<line x1="70" y1="285" x2="780" y2="285" stroke="#EDF2F7"/>
+<text class="s" x="62" y="289" text-anchor="end" >0.5%</text>
+<line x1="70" y1="220" x2="780" y2="220" stroke="#EDF2F7"/>
+<text class="s" x="62" y="224" text-anchor="end" >1%</text>
+<line x1="70" y1="285" x2="780" y2="285" stroke="#C53030" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text class="s" x="780" y="279" text-anchor="end" style="fill:#C53030">SLO threshold 0.5%</text>
+<path d="M70.0 339.6 L105.5 337.0 L141.0 340.9 L176.5 334.4 L212.0 338.3 L247.5 335.7 L283.0 339.6 L318.5 337.0 L354.0 333.1 L389.5 338.3 L425.0 239.5 L460.5 298.0 L496.0 334.4 L531.5 338.3 L567.0 337.0 L602.5 339.6 L638.0 335.7 L673.5 338.3 L709.0 340.9 L744.5 337.0 L780.0 339.6" fill="none" stroke="#1C6F73" stroke-width="2.5"/>
+<text class="s" x="433" y="243.5" text-anchor="start" >deploy rolled back</text>
+<text class="s" x="410" y="394" text-anchor="middle" >Illustration · synthetic data</text>
+</svg>

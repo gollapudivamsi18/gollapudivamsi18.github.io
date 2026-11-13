@@ -1,0 +1,29 @@
+# Reusable deployment job. The same package moves through every environment,
+# so production receives exactly what was tested in UAT.
+parameters:
+  - name: environment
+    type: string
+
+jobs:
+  - deployment: deploy
+    displayName: Deploy to ${{ parameters.environment }}
+    environment: ${{ parameters.environment }}
+    pool:
+      vmImage: ubuntu-latest
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - download: current
+              artifact: transaction-api
+            - script: |
+                echo "Deploying transaction-api $(Build.BuildNumber) to ${{ parameters.environment }}"
+                echo "Recording previous version for rollback"
+              displayName: Deploy (demo step)
+            - script: echo "Smoke test - POST /transfers with a synthetic request, expect 200"
+              displayName: Post-deployment smoke test
+        on:
+          failure:
+            steps:
+              - script: echo "Smoke test failed - redeploy previous package (see docs/rollback.md)"
+                displayName: Automatic rollback hook

@@ -1,0 +1,73 @@
+# Independent portfolio demo - Transaction API delivery pipeline.
+# Fictional names and service connections. Not a production configuration.
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  branches:
+    include: [main, release/*]
+  paths:
+    include: [demos/banking-pipeline/*]
+
+# Pull-request validation. In Azure Repos, PR validation is set through a
+# branch policy (see docs/branch-policy.md); this block is used on GitHub.
+pr:
+  branches:
+    include: [main]
+
+variables:
+  - name: projectDir
+    value: demos/banking-pipeline
+  - name: isMain
+    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+
+stages:
+  - stage: Build
+    displayName: Build and PR checks
+    jobs:
+      - job: build
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.12'
+          - script: python -m unittest discover -s $(projectDir)/tests -v
+            displayName: Unit tests
+          - script: python -m py_compile $(projectDir)/src/transaction_api.py
+            displayName: Syntax check
+          # Placeholder for SonarQube / dependency scanning quality gates.
+          - script: echo "Quality gate would run here (SonarQube, dependency scan)"
+            displayName: Quality gate (placeholder)
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: $(projectDir)/src
+              archiveFile: $(Build.ArtifactStagingDirectory)/transaction-api-$(Build.BuildNumber).zip
+          - publish: $(Build.ArtifactStagingDirectory)
+            artifact: transaction-api
+            displayName: Publish versioned package
+
+  - stage: Dev
+    dependsOn: Build
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    jobs:
+      - template: templates/deploy.yml
+        parameters:
+          environment: txn-api-dev
+
+  - stage: UAT
+    dependsOn: Dev
+    condition: and(succeeded(), eq(variables.isMain, true))
+    jobs:
+      - template: templates/deploy.yml
+        parameters:
+          environment: txn-api-uat
+
+  - stage: Prod
+    dependsOn: UAT
+    condition: and(succeeded(), eq(variables.isMain, true))
+    jobs:
+      # The txn-api-prod environment has an Approvals check (change approver
+      # group) and a business-hours check. The run waits here until approved.
+      - template: templates/deploy.yml
+        parameters:
+          environment: txn-api-prod

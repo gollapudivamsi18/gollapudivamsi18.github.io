@@ -1,0 +1,15 @@
+# Copy to terraform.tfvars and adjust. Values are fictional.
+workload    = "amdemo"
+environment = "dev"
+location    = "centralindia"
+dr_location = "southindia"
+owner       = "platform-team"
+cost_centre = "CC-0000-DEMO"
+
+spokes = {
+  portfolio = { address_space = "10.11.0.0/24" }
+  reporting = { address_space = "10.12.0.0/24" }
+}
+
+enable_dr                 = false
+backup_storage_redundancy = "GeoRedundant"

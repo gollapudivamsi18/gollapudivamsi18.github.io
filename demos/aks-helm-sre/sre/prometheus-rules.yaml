@@ -1,0 +1,38 @@
+# Multi-window burn-rate alerts for the 99.5% availability SLO (error budget = 0.005).
+groups:
+  - name: clinic-slots-slo
+    rules:
+      - record: clinic_slots:error_ratio:rate5m
+        expr: |
+          sum(rate(nginx_ingress_controller_requests{service="clinic-slots",status=~"5.."}[5m]))
+          / sum(rate(nginx_ingress_controller_requests{service="clinic-slots"}[5m]))
+      - record: clinic_slots:error_ratio:rate1h
+        expr: |
+          sum(rate(nginx_ingress_controller_requests{service="clinic-slots",status=~"5.."}[1h]))
+          / sum(rate(nginx_ingress_controller_requests{service="clinic-slots"}[1h]))
+      - record: clinic_slots:error_ratio:rate6h
+        expr: |
+          sum(rate(nginx_ingress_controller_requests{service="clinic-slots",status=~"5.."}[6h]))
+          / sum(rate(nginx_ingress_controller_requests{service="clinic-slots"}[6h]))
+      - alert: ClinicSlotsFastBurn
+        expr: clinic_slots:error_ratio:rate1h > (14.4 * 0.005) and clinic_slots:error_ratio:rate5m > (14.4 * 0.005)
+        for: 2m
+        labels:
+          severity: page
+        annotations:
+          summary: Clinic Slots API is burning error budget fast (2% of budget per hour)
+          runbook: demos/aks-helm-sre/sre/incident-runbook.md
+      - alert: ClinicSlotsSlowBurn
+        expr: clinic_slots:error_ratio:rate6h > (6 * 0.005)
+        for: 15m
+        labels:
+          severity: ticket
+        annotations:
+          summary: Clinic Slots API error budget burn is elevated over 6 hours
+          runbook: demos/aks-helm-sre/sre/incident-runbook.md
+      - alert: ClinicSlotsPodRestarts
+        expr: increase(kube_pod_container_status_restarts_total{namespace="clinic-prod"}[15m]) > 3
+        labels:
+          severity: ticket
+        annotations:
+          summary: Pods in clinic-prod are restarting repeatedly

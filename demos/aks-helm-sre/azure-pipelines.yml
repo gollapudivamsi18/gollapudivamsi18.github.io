@@ -1,0 +1,106 @@
+# Independent portfolio demo - Clinic Slots API on AKS with Helm.
+# Fictional service connections and names. Not a production configuration.
+trigger:
+  branches:
+    include: [main]
+  paths:
+    include: [demos/aks-helm-sre/*]
+
+pr:
+  branches:
+    include: [main]
+
+variables:
+  appDir: demos/aks-helm-sre/app
+  chartDir: demos/aks-helm-sre/chart/clinic-slots
+  imageRepo: clinic-slots
+  acrServiceConnection: sc-demo-acr          # fictional
+  aksServiceConnection: sc-demo-aks          # fictional
+  imageTag: $(Build.BuildId)
+
+stages:
+  - stage: CI
+    displayName: Build and checks
+    jobs:
+      - job: checks
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - script: python -m unittest discover -s $(appDir) -v
+            displayName: Unit tests
+          - script: helm lint $(chartDir) && helm template demo $(chartDir) > rendered.yaml
+            displayName: Helm lint and render
+          - task: Docker@2
+            displayName: Build image
+            inputs:
+              command: build
+              repository: $(imageRepo)
+              dockerfile: $(appDir)/Dockerfile
+              tags: $(imageTag)
+          - script: |
+              docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+                aquasec/trivy:latest image --exit-code 1 --severity CRITICAL $(imageRepo):$(imageTag)
+            displayName: Image scan (fail on CRITICAL)
+          - task: Docker@2
+            displayName: Push image
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+            inputs:
+              command: push
+              containerRegistry: $(acrServiceConnection)
+              repository: $(imageRepo)
+              tags: $(imageTag)
+
+  - stage: Staging
+    dependsOn: CI
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    jobs:
+      - deployment: deploy_staging
+        environment: clinic-slots-staging
+        pool:
+          vmImage: ubuntu-latest
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: HelmDeploy@0
+                  displayName: helm upgrade (staging)
+                  inputs:
+                    connectionType: Kubernetes Service Connection
+                    kubernetesServiceEndpoint: $(aksServiceConnection)
+                    namespace: clinic-staging
+                    command: upgrade
+                    chartType: FilePath
+                    chartPath: $(chartDir)
+                    releaseName: clinic-slots
+                    overrideValues: image.tag=$(imageTag)
+                    arguments: --install --atomic --timeout 5m
+                - script: bash demos/aks-helm-sre/sre/smoke-test.sh https://staging.clinic.example.internal
+                  displayName: Smoke test
+
+  - stage: Production
+    dependsOn: Staging
+    jobs:
+      - deployment: deploy_prod
+        # Approval and business-hours checks are configured on this environment.
+        environment: clinic-slots-prod
+        pool:
+          vmImage: ubuntu-latest
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: HelmDeploy@0
+                  displayName: helm upgrade (prod)
+                  inputs:
+                    connectionType: Kubernetes Service Connection
+                    kubernetesServiceEndpoint: $(aksServiceConnection)
+                    namespace: clinic-prod
+                    command: upgrade
+                    chartType: FilePath
+                    chartPath: $(chartDir)
+                    releaseName: clinic-slots
+                    valueFile: $(chartDir)/values-prod.yaml
+                    overrideValues: image.tag=$(imageTag)
+                    arguments: --install --atomic --timeout 10m

@@ -1,0 +1,36 @@
+# Example SLO for the fictional Clinic Slots API (OpenSLO-style, simplified).
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  name: clinic-slots-availability
+  displayName: Clinic Slots API availability
+spec:
+  service: clinic-slots
+  description: >
+    Share of /api/slots requests that return a non-5xx response,
+    measured at the ingress over a rolling 28-day window.
+  indicator:
+    metadata:
+      name: non-5xx-ratio
+    spec:
+      ratioMetric:
+        good:
+          metricSource:
+            type: Prometheus
+            spec:
+              query: sum(rate(nginx_ingress_controller_requests{service="clinic-slots",status!~"5.."}[5m]))
+        total:
+          metricSource:
+            type: Prometheus
+            spec:
+              query: sum(rate(nginx_ingress_controller_requests{service="clinic-slots"}[5m]))
+  timeWindow:
+    - duration: 28d
+      isRolling: true
+  budgetingMethod: Occurrences
+  objectives:
+    - displayName: 99.5% of requests succeed
+      target: 0.995
+# Error budget: 0.5% of requests in 28 days.
+# Policy: if more than 75% of the budget is spent, pause feature releases and
+# prioritise reliability work until the budget recovers.

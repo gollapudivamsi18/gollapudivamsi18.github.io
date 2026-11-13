@@ -1,0 +1,6 @@
+apiVersion: v2
+name: clinic-slots
+description: Helm chart for the fictional Clinic Slots API (independent portfolio demo)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

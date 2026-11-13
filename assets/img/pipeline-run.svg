@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" role="img" aria-labelledby="t d">
+<title id="t">Sample pipeline run for the Clinic Slots demo (illustration)</title><desc id="d">CI stage succeeded with unit tests, helm lint, image build, image scan and push. Staging succeeded with helm upgrade and smoke test. Production is waiting for approval.</desc>
+<style>text{font-family:'Segoe UI',Roboto,'Noto Sans',Arial,sans-serif;fill:#14213D} .t{font-size:17px;font-weight:700} .s{font-size:13.5px;fill:#4A5568} .n{font-size:13px;font-weight:700;fill:#fff} .h{font-size:20px;font-weight:700}</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1A2A4E"/></marker></defs>
+<rect width="820" height="380" fill="#fff"/>
+<rect x="0" y="0" width="820" height="56" fill="#1A2A4E"/>
+<text class="h" x="20" y="35" text-anchor="start" style="fill:#fff">clinic-slots · run 20261112.4 · main</text>
+<text class="t" x="800" y="35" text-anchor="end" style="fill:#FBD38D">Waiting for approval</text>
+<rect x="20" y="76" width="252" height="270" rx="10" fill="#F7FAFC" stroke="#CBD5E0" stroke-width="1.5"/>
+<text class="t" x="36" y="106" text-anchor="start" >CI - Build and checks</text>
+<circle cx="42" cy="128" r="6" fill="#2F855A"/>
+<text class="s" x="54" y="133" text-anchor="start" >Succeeded · 4m 12s</text>
+<rect x="32" y="156" width="228" height="28" rx="6" fill="#fff" stroke="#E2E8F0"/>
+<text x="44" y="175" style="font-size:15px;font-weight:700;fill:#2F855A">&#10003;</text>
+<text class="s" x="64" y="175" text-anchor="start" style="fill:#14213D">Unit tests (4 passed)</text>
+<rect x="32" y="192" width="228" height="28" rx="6" fill="#fff" stroke="#E2E8F0"/>
+<text x="44" y="211" style="font-size:15px;font-weight:700;fill:#2F855A">&#10003;</text>
+<text class="s" x="64" y="211" text-anchor="start" style="fill:#14213D">Helm lint and render</text>
+<rect x="32" y="228" width="228" height="28" rx="6" fill="#fff" stroke="#E2E8F0"/>
+<text x="44" y="247" style="font-size:15px;font-weight:700;fill:#2F855A">&#10003;</text>
+<text class="s" x="64" y="247" text-anchor="start" style="fill:#14213D">Build image</text>
+<rect x="32" y="264" width="228" height="28" rx="6" fill="#fff" stroke="#E2E8F0"/>
+<text x="44" y="283" style="font-size:15px;font-weight:700;fill:#2F855A">&#10003;</text>
+<text class="s" x="64" y="283" text-anchor="start" style="fill:#14213D">Image scan: 0 critical</text>
+<rect x="32" y="300" width="228" height="28" rx="6" fill="#fff" stroke="#E2E8F0"/>
+<text x="44" y="319" style="font-size:15px;font-weight:700;fill:#2F855A">&#10003;</text>
+<text class="s" x="64" y="319" text-anchor="start" style="fill:#14213D">Push to registry</text>
+<line x1="274" y1="210" x2="286" y2="210" stroke="#1A2A4E" stroke-width="2.2" marker-end="url(#a)"/>
+<rect x="288" y="76" width="252" height="270" rx="10" fill="#F7FAFC" stroke="#CBD5E0" stroke-width="1.5"/>
+<text class="t" x="304" y="106" text-anchor="start" >Staging</text>
+<circle cx="310" cy="128" r="6" fill="#2F855A"/>
+<text class="s" x="322" y="133" text-anchor="start" >Succeeded · 2m 05s</text>
+<rect x="300" y="156" width="228" height="28" rx="6" fill="#fff" stroke="#E2E8F0"/>
+<text x="312" y="175" style="font-size:15px;font-weight:700;fill:#2F855A">&#10003;</text>
+<text class="s" x="332" y="175" text-anchor="start" style="fill:#14213D">helm upgrade --atomic</text>
+<rect x="300" y="192" width="228" height="28" rx="6" fill="#fff" stroke="#E2E8F0"/>
+<text x="312" y="211" style="font-size:15px;font-weight:700;fill:#2F855A">&#10003;</text>
+<text class="s" x="332" y="211" text-anchor="start" style="fill:#14213D">Smoke test: 3/3 passed</text>
+<line x1="542" y1="210" x2="554" y2="210" stroke="#1A2A4E" stroke-width="2.2" marker-end="url(#a)"/>
+<rect x="556" y="76" width="252" height="270" rx="10" fill="#F7FAFC" stroke="#CBD5E0" stroke-width="1.5"/>
+<text class="t" x="572" y="106" text-anchor="start" >Production</text>
+<circle cx="578" cy="128" r="6" fill="#B7791F"/>
+<text class="s" x="590" y="133" text-anchor="start" >Waiting · approval needed</text>
+<rect x="568" y="156" width="228" height="28" rx="6" fill="#fff" stroke="#E2E8F0"/>
+<text x="580" y="175" style="font-size:15px;font-weight:700;fill:#B7791F">&#9208;</text>
+<text class="s" x="600" y="175" text-anchor="start" style="fill:#14213D">Approval: 0 of 1</text>
+<rect x="568" y="192" width="228" height="28" rx="6" fill="#fff" stroke="#E2E8F0"/>
+<text x="580" y="211" style="font-size:15px;font-weight:700;fill:#B7791F">&#8230;</text>
+<text class="s" x="600" y="211" text-anchor="start" style="fill:#14213D">helm upgrade (queued)</text>
+<text class="s" x="410" y="370" text-anchor="middle" >Illustration drawn from the demo pipeline file · synthetic data</text>
+</svg>

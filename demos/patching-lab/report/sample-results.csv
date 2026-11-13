@@ -1,0 +1,9 @@
+host,date,os,before,after,result
+lab-rhel-01,2026-10-14,Red Hat Enterprise Linux 8.9,4.18.0-513.5.1.el8_9,4.18.0-553.el8_10,compliant
+lab-rhel-02,2026-10-14,Red Hat Enterprise Linux 8.9,4.18.0-513.5.1.el8_9,4.18.0-553.el8_10,compliant
+lab-ubuntu-01,2026-10-14,Ubuntu 22.04.4 LTS,5.15.0-105-generic,5.15.0-119-generic,compliant
+lab-ubuntu-02,2026-10-14,Ubuntu 22.04.4 LTS,5.15.0-105-generic,5.15.0-105-generic,needs-attention
+lab-win-01,2026-10-15,Microsoft Windows Server 2019 Standard,17763.5820,17763.6293,compliant
+lab-win-02,2026-10-15,Microsoft Windows Server 2022 Standard,20348.2402,20348.2700,compliant
+lab-win-03,2026-10-15,Microsoft Windows Server 2016 Standard,14393.6981,14393.6981,needs-attention
+lab-win-04,2026-10-15,Microsoft Windows Server 2022 Standard,20348.2402,20348.2700,compliant
