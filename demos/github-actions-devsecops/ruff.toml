@@ -1,0 +1,6 @@
+# Ruff settings for the DevSecOps demo (CI runs: ruff check --select E,F,W,B,S --ignore S101 app).
+line-length = 110
+
+[lint.per-file-ignores]
+# Tests only open http://127.0.0.1:<ephemeral port> built in setUp, never a user-supplied URL.
+"app/test_*.py" = ["S310"]

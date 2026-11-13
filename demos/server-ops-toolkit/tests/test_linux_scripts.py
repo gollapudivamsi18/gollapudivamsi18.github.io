@@ -13,7 +13,8 @@ FIX = os.path.join(HERE, "fixtures")
 
 
 def run(script, *args, env=None):
-    e = dict(os.environ, **(env or {}))
+    # SKIP_SYSTEMD keeps the host's own unit state (e.g. a CI runner) out of fixture tests.
+    e = dict(os.environ, SKIP_SYSTEMD="1", **(env or {}))
     return subprocess.run(["bash", os.path.join(LINUX, script), *args],
                           capture_output=True, text=True, env=e, check=False)
 

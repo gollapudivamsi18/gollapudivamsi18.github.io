@@ -118,7 +118,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     port = int(os.environ.get("PORT", "8080"))
-    ThreadingHTTPServer(("0.0.0.0", port), Handler).serve_forever()  # nosec B104 - container service
+    ThreadingHTTPServer(("0.0.0.0", port), Handler).serve_forever()  # noqa: S104  # nosec B104 - container service, port mapped by runtime
 
 
 if __name__ == "__main__":

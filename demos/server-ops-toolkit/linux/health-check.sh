@@ -5,10 +5,12 @@
 # Usage: health-check.sh [--json] [--disk-warn 80] [--disk-crit 90] [--mem-warn 90] [--load-warn 1.5]
 # Exit codes: 0 OK, 1 WARNING, 2 CRITICAL (Nagios-style, so it can feed a monitor).
 #
-# Paths can be overridden for testing: PROC_ROOT (default /proc).
+# Overrides for testing: PROC_ROOT (default /proc); SKIP_SYSTEMD=1 skips the
+# failed-unit check so results depend only on fixture files.
 set -euo pipefail
 
 PROC_ROOT="${PROC_ROOT:-/proc}"
+SKIP_SYSTEMD="${SKIP_SYSTEMD:-0}"
 DISK_WARN=80; DISK_CRIT=90; MEM_WARN=90; LOAD_WARN=1.5; JSON=0
 
 while [[ $# -gt 0 ]]; do
@@ -18,7 +20,7 @@ while [[ $# -gt 0 ]]; do
     --disk-crit) DISK_CRIT="$2"; shift ;;
     --mem-warn) MEM_WARN="$2"; shift ;;
     --load-warn) LOAD_WARN="$2"; shift ;;
-    -h|--help) sed -n '2,8p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,9p' "$0"; exit 0 ;;
     *) echo "unknown option: $1" >&2; exit 64 ;;
   esac
   shift
@@ -69,7 +71,7 @@ while read -r use mount; do
 done < <(df -P -x tmpfs -x devtmpfs -x overlay -x squashfs 2>/dev/null | awk 'NR>1 {print $5, $6}')
 
 # --- Failed systemd units (skipped where systemd is not PID 1) ------------
-if [[ -d /run/systemd/system ]] && command -v systemctl >/dev/null; then
+if [[ "$SKIP_SYSTEMD" != 1 ]] && [[ -d /run/systemd/system ]] && command -v systemctl >/dev/null; then
   failed=$(systemctl --failed --no-legend --plain 2>/dev/null | awk '{print $1}' | paste -sd, -)
   if [[ -n "$failed" ]]; then
     record systemd WARNING "failed units: $failed"
@@ -77,7 +79,7 @@ if [[ -d /run/systemd/system ]] && command -v systemctl >/dev/null; then
     record systemd OK "no failed units"
   fi
 else
-  record systemd OK "systemd not running here; check skipped"
+  record systemd OK "systemd check skipped (not running here or SKIP_SYSTEMD=1)"
 fi
 
 # --- Output -----------------------------------------------------------------
