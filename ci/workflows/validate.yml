@@ -38,6 +38,8 @@ jobs:
           cd ../app && python -m unittest -v
       - name: Server ops toolkit tests (Linux scripts against fixtures)
         run: python -m unittest discover -s demos/server-ops-toolkit/tests -v
+      - name: Portfolio assistant engine and knowledge base
+        run: node tests/assistant.test.js
       - name: Parse all YAML files
         run: |
           pip install --quiet pyyaml
@@ -150,7 +152,7 @@ jobs:
           set -e
           files=$(git ls-files | grep -iE '\.(docx?|pdf|rtf|odt)$' || true)
           if [ -n "$files" ]; then echo "Document files found:"; echo "$files"; exit 1; fi
-          if grep -niE 'download(=|\s*>)|\.(docx|pdf)"' index.html resume.html; then
+          if grep -niE 'download(=|\s*>)|\.(docx|pdf)"' index.html resume.html projects.html; then
             echo "Download link found"; exit 1
           fi
           if grep -niE 'mailto:|\+91|[0-9]{10}' resume.html; then
