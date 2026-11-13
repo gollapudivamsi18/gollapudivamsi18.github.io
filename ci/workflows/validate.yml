@@ -1,0 +1,159 @@
+name: Validate demos
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch cancels the older run, so there is one
+# result (and at most one failure email) per branch instead of a pile-up.
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: AKS demo app tests
+        run: cd demos/aks-helm-sre/app && python -m unittest -v
+      - name: Banking pipeline tests
+        run: python -m unittest discover -s demos/banking-pipeline/tests -v
+      - name: Migration wave planner tests
+        run: cd demos/migration-plan/scripts && python -m unittest -v
+      - name: Patch report tests
+        run: cd demos/patching-lab/report && python -m unittest -v
+      - name: SRE observability tests (error budget + service)
+        run: |
+          cd demos/sre-observability/slo && python -m unittest -v
+          cd ../app && python -m unittest -v
+      - name: Server ops toolkit tests (Linux scripts against fixtures)
+        run: python -m unittest discover -s demos/server-ops-toolkit/tests -v
+      - name: Parse all YAML files
+        run: |
+          pip install --quiet pyyaml
+          python - <<'PY'
+          import pathlib, sys, yaml
+          bad = 0
+          for p in pathlib.Path('.').rglob('*.y*ml'):
+              if 'templates' in p.parts and 'chart' in p.parts:
+                  continue  # Helm templates are checked by helm lint
+              try:
+                  list(yaml.safe_load_all(p.read_text()))
+              except Exception as e:
+                  print(f'{p}: {e}'); bad += 1
+          sys.exit(bad)
+          PY
+
+  helm:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: azure/setup-helm@v4
+      - name: Lint and render chart
+        run: |
+          helm lint demos/aks-helm-sre/chart/clinic-slots
+          helm template demo demos/aks-helm-sre/chart/clinic-slots \
+            -f demos/aks-helm-sre/chart/clinic-slots/values-prod.yaml > /dev/null
+      - name: Smoke test the app locally
+        run: |
+          cd demos/aks-helm-sre/app && (python3 app.py &)
+          # Wait for the port instead of a fixed sleep (bounded: 15 x 1s).
+          for i in $(seq 1 15); do
+            curl -fsS http://localhost:8080/healthz >/dev/null 2>&1 && break
+            sleep 1
+          done
+          bash ../sre/smoke-test.sh http://localhost:8080
+
+  terraform:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: demos/terraform-hub-spoke
+    steps:
+      - uses: actions/checkout@v5
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform fmt -check -diff -recursive
+      - run: terraform init -backend=false -input=false
+      - run: terraform validate
+
+  scripts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: ShellCheck
+        run: shellcheck demos/patching-lab/linux/*.sh demos/aks-helm-sre/sre/*.sh demos/server-ops-toolkit/linux/*.sh
+      - name: Linux patch scripts (dry run)
+        run: |
+          bash demos/patching-lab/linux/precheck.sh /tmp/patchlab
+          sudo bash demos/patching-lab/linux/patch.sh --dry-run
+          bash demos/patching-lab/linux/postcheck.sh /tmp/patchlab
+      - name: PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+          $r = @()
+          $r += Invoke-ScriptAnalyzer -Path demos/patching-lab/windows -Severity Error
+          $r += Invoke-ScriptAnalyzer -Path demos/server-ops-toolkit/windows -Severity Error
+          $r | Format-Table
+          if ($r) { exit 1 }
+      - name: Pester tests (server ops module)
+        shell: pwsh
+        run: |
+          Install-Module Pester -MinimumVersion 5.5 -Force -Scope CurrentUser -SkipPublisherCheck
+          $c = New-PesterConfiguration
+          $c.Run.Path = 'demos/server-ops-toolkit/tests'
+          $c.Run.Exit = $true
+          $c.Output.Verbosity = 'Detailed'
+          Invoke-Pester -Configuration $c
+
+  prometheus:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: promtool check and unit-test alert rules
+        run: |
+          cd demos/sre-observability
+          docker run --rm -v "$PWD:/w" -w /w --entrypoint promtool prom/prometheus:v2.55.1 \
+            check rules prometheus/rules/orders-slo.rules.yml
+          docker run --rm -v "$PWD/prometheus/rules:/rules" -w /rules --entrypoint promtool prom/prometheus:v2.55.1 \
+            test rules orders-slo.rules.test.yml
+      - name: amtool check config
+        run: |
+          docker run --rm -v "$PWD/demos/sre-observability/alertmanager:/c" --entrypoint amtool \
+            prom/alertmanager:v0.27.0 check-config /c/alertmanager.yml
+      - name: docker compose config
+        run: docker compose -f demos/sre-observability/docker-compose.yml config --quiet
+
+  public-site:
+    # The public site must stay view-only: no resume files, no download links,
+    # and no phone number or email on the resume page.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: No resume files or download links in the published site
+        run: |
+          set -e
+          files=$(git ls-files | grep -iE '\.(docx?|pdf|rtf|odt)$' || true)
+          if [ -n "$files" ]; then echo "Document files found:"; echo "$files"; exit 1; fi
+          if grep -niE 'download(=|\s*>)|\.(docx|pdf)"' index.html resume.html; then
+            echo "Download link found"; exit 1
+          fi
+          if grep -niE 'mailto:|\+91|[0-9]{10}' resume.html; then
+            echo "Contact details found on the public resume page"; exit 1
+          fi
+          echo "Public site is view-only."

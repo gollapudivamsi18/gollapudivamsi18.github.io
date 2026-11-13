@@ -1,0 +1,160 @@
+# DevSecOps pipeline for demos/github-actions-devsecops (independent portfolio demo).
+# Every job uses free GitHub-hosted runners and public actions; no cloud credentials.
+name: DevSecOps demo
+
+on:
+  pull_request:
+    paths:
+      - "demos/github-actions-devsecops/**"
+      - ".github/workflows/devsecops-demo.yml"
+  push:
+    branches: [main]
+    paths:
+      - "demos/github-actions-devsecops/**"
+      - ".github/workflows/devsecops-demo.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: devsecops-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  APP_DIR: demos/github-actions-devsecops/app
+  IMAGE: inventory-api:${{ github.sha }}
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12" }
+      - run: pip install --quiet ruff
+      - name: Ruff lint
+        run: ruff check --select E,F,W,B,S --ignore S101 "$APP_DIR"
+
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12" }
+      - run: pip install --quiet coverage
+      - name: Unit and HTTP tests with coverage gate (80%)
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          coverage run -m unittest -v
+          coverage report --fail-under=80
+          coverage xml -o coverage.xml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: ${{ env.APP_DIR }}/coverage.xml
+          retention-days: 7
+
+  sast:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12" }
+      - run: pip install --quiet bandit
+      - name: Bandit (fail on medium severity or higher)
+        run: bandit -r "$APP_DIR" -x "$APP_DIR/test_inventory_api.py" -ll
+
+  secrets:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Gitleaks scan of the working tree
+        run: |
+          docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.21.2 \
+            detect --source /repo --no-git --redact --exit-code 1
+
+  dependencies:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12" }
+      - run: pip install --quiet pip-audit
+      - name: Audit runtime requirements
+        run: pip-audit -r "$APP_DIR/requirements.txt" --strict
+      - name: Dependency review (pull requests only)
+        if: github.event_name == 'pull_request'
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+
+  container:
+    needs: [lint, test, sast, secrets, dependencies]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build image
+        run: docker build -t "$IMAGE" "$APP_DIR"
+      - name: Smoke test the container
+        run: |
+          docker run -d --name api -p 8080:8080 -e APP_VERSION="${GITHUB_SHA::7}" "$IMAGE"
+          for i in $(seq 1 15); do curl -fsS localhost:8080/healthz && break; sleep 1; done
+          curl -fsS localhost:8080/api/items
+          test "$(docker inspect -f '{{.Config.User}}' "$IMAGE")" = "10001"
+          docker rm -f api
+      - name: Trivy report (HIGH and CRITICAL)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ env.IMAGE }}
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          format: table
+          exit-code: "0"
+      - name: Trivy gate (fail on fixable CRITICAL)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ env.IMAGE }}
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+      - name: SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ env.IMAGE }}
+          format: cyclonedx
+          output: sbom.cdx.json
+      - name: Save image and SBOM as build artifacts
+        run: docker save "$IMAGE" | gzip > inventory-api.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: inventory-api-${{ github.sha }}
+          path: |
+            inventory-api.tar.gz
+            sbom.cdx.json
+          retention-days: 7
+
+  deploy-example:
+    # Shows the promotion pattern only. It does not deploy anywhere: there is
+    # no cloud subscription behind this demo. See docs/deployment.md for the
+    # OIDC-based Azure login that a real job would use.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    needs: [container]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment: demo-staging
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: inventory-api-${{ github.sha }}
+      - name: Show what would be deployed
+        run: |
+          ls -l inventory-api.tar.gz sbom.cdx.json
+          echo "Would push ${IMAGE} to a registry and deploy to staging."
+          echo "No deployment happens in this demo."
