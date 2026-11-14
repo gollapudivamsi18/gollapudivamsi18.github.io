@@ -32,6 +32,8 @@ jobs:
           cd ../app && python -m unittest -v
       - name: Portfolio assistant engine and knowledge base
         run: node tests/assistant.test.js
+      - name: CI/CD failure analysis prototype (rule-based)
+        run: node tests/failure-analyzer.test.js
       - name: Parse all YAML files
         run: |
           pip install --quiet pyyaml
