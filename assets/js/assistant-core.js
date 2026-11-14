@@ -1,4 +1,4 @@
-/* Conversation engine for Vamsikrishna's Portfolio AI Assistant.
+/* Conversation engine for Vamsikrishna's portfolio assistant (rule-based, no AI service).
  *
  * Pure logic, no DOM: it runs in the browser and in Node (for tests).
  * Answers come only from the knowledge base; when nothing matches, the
