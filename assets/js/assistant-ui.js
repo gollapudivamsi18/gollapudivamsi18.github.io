@@ -34,7 +34,7 @@
   panel.setAttribute("aria-label", "Portfolio assistant");
   panel.innerHTML =
     '<div class="ai-head"><span class="avatar">' + ICON.bot + '</span>' +
-    '<div class="who"><strong>Portfolio Assistant</strong><small>AI · answers from resume &amp; project notes</small></div>' +
+    '<div class="who"><strong>Portfolio Assistant</strong><small>Answers from resume &amp; project notes · runs in your browser</small></div>' +
     '<button type="button" class="icon-btn" data-act="voice" aria-pressed="false" aria-label="Spoken replies off" title="Spoken replies">' + ICON.speaker + '</button>' +
     '<button type="button" class="icon-btn" data-act="min" aria-label="Minimize assistant" title="Minimize">' + ICON.minimize + '</button>' +
     '<button type="button" class="icon-btn" data-act="close" aria-label="Close and clear conversation" title="Close">' + ICON.close + '</button></div>' +
@@ -142,7 +142,7 @@
   }
 
   function greet() {
-    addMessage("bot", "Hi! I'm an AI assistant for Vamsikrishna's portfolio, not Vamsikrishna himself. I answer from his resume and project notes: Azure DevOps, SRE, Azure infrastructure, Windows and Linux administration. What would you like to know?",
+    addMessage("bot", "Hi! I'm the portfolio assistant, not Vamsikrishna himself. I match your question to notes taken from his resume and project documentation (no external AI service), so I can explain his Azure DevOps, SRE, Azure infrastructure, Windows and Linux work and his projects. What would you like to know?",
       convo ? convo.suggest(null) : []);
   }
 

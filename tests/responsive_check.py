@@ -1,7 +1,7 @@
 """Responsive and behaviour check for the portfolio pages (Playwright + Chrome).
 
   python3 tests/responsive_check.py            # serves the repo on a local port
-Checks at 320, 375, 390, 768, 1024, 1440 and 1920 px:
+Checks at 320, 360, 390, 768, 1024, 1440 and 1920 px:
   - no horizontal page overflow
   - no element wider than the viewport (outside scroll containers)
   - the floating assistant answers, keeps identity, and minimizes
@@ -18,7 +18,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-WIDTHS = [320, 375, 390, 768, 1024, 1440, 1920]
+WIDTHS = [320, 360, 390, 768, 1024, 1440, 1920]
 PAGES = ["index.html", "projects.html", "resume.html"]
 SHOTS = ROOT / "tests" / "screenshots"
 
@@ -83,7 +83,7 @@ async def main(chrome):
             if await page.locator(".ai-panel").is_visible():
                 failures.append((width, "assistant-minimize", "panel still visible"))
             # Diagram lightbox
-            await page.click("#p-aks .card-actions button")
+            await page.click("#p-aks .preview")
             if not await page.locator("dialog.lightbox[open]").is_visible():
                 failures.append((width, "lightbox", "did not open"))
             await page.screenshot(path=str(SHOTS / f"{width}-lightbox.png"))

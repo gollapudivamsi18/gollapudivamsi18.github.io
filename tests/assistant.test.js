@@ -37,6 +37,8 @@ test("routes recruiter questions to the right topic", () => {
     "Does he do UI/UX design?": "identity",
     "Explain the Terraform hub and spoke demo": "hub-spoke-demo",
     "How does the burn-rate alerting project work?": "sre-demo",
+    "Explain the architecture diagram": "architecture",
+    "Is this a real AI?": "assistant",
   };
   for (const [q, id] of Object.entries(cases)) {
     const r = new Conversation(kb).ask(q);
@@ -99,7 +101,7 @@ test("only the four retained projects are described", () => {
 
 test("small talk", () => {
   const c = new Conversation(kb);
-  assert.match(c.ask("Hello").text, /AI assistant for Vamsikrishna/);
+  assert.match(c.ask("Hello").text, /portfolio assistant for Vamsikrishna/);
   assert.match(c.ask("thanks").text, /welcome/);
   assert.strictEqual(c.ask("").topic, null);
 });
