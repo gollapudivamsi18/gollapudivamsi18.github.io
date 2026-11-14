@@ -88,6 +88,20 @@ async def main(chrome):
                 failures.append((width, "lightbox", "did not open"))
             await page.screenshot(path=str(SHOTS / f"{width}-lightbox.png"))
             await page.keyboard.press("Escape")
+            # CI/CD failure analysis prototype: open, analyse a sample, approve
+            await page.click("#failure-demo > summary")
+            await page.select_option("#fa-sample", "helm")
+            await page.click("#fa-run")
+            out = await page.locator("#fa-out").inner_text()
+            if "Image pull failure" not in out:
+                failures.append((width, "failure-demo", out[:120]))
+            await page.click("#fa-out .fa-approve")
+            if "Nothing is executed" not in await page.locator("#fa-out .fa-note").inner_text():
+                failures.append((width, "failure-demo-review", "no approval note"))
+            await page.locator("#aiops").screenshot(path=str(SHOTS / f"{width}-aiops.png"))
+            ov = await page.evaluate(OVERFLOW_JS)
+            if ov["docWidth"] > ov["vw"] or ov["bad"]:
+                failures.append((width, "failure-demo-overflow", ov))
             if errors:
                 failures.append((width, "js-errors", errors))
                 print(f"{width:>5}px JS errors: {errors}")
