@@ -49,28 +49,28 @@
 <article class="case" id="aks-helm-sre" aria-labelledby="aks-helm-sre-title">
   <div class="wrap">
     <div class="case-head">
-      <div><p class="kicker teal">Kubernetes · Azure DevOps · SRE</p><h2 id="aks-helm-sre-title">AKS + Helm delivery with SRE guardrails</h2></div>
+      <div><p class="kicker teal">Kubernetes · Azure DevOps · SRE</p><h2 id="aks-helm-sre-title">AKS + Helm delivery with SRE guardrails</h2><ul class="vstatus" aria-label="Verification status"><li class="st ok">Tested in CI</li><li class="st warn">Not deployed to Azure</li></ul></div>
       <a class="btn btn-ghost btn-sm" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/aks-helm-sre" target="_blank" rel="noopener">Source on GitHub ↗</a>
     </div>
     <div class="case-grid">
       <div class="case-facts">
         <figure class="diagram-card" style="margin:0">
           <button class="zoomable" type="button" data-diagram="assets/img/aks-sre-architecture.svg" data-title="AKS + Helm delivery with SRE guardrails" aria-label="Enlarge diagram: AKS + Helm delivery with SRE guardrails">
-            <img src="assets/img/aks-sre-architecture.svg" width="720" height="330" alt="Azure Pipelines runs tests, helm lint and an image scan, pushes to ACR, deploys to AKS staging with an atomic Helm upgrade and smoke test, waits for approval, then deploys to production. Prometheus and Azure Monitor feed burn-rate alerts, an incident runbook and an error-budget policy that can freeze releases.">
+            <img src="assets/img/aks-sre-architecture.svg" width="720" height="330" alt="Azure Pipelines runs tests, helm lint and an image scan, pushes to ACR, deploys to AKS staging with an atomic Helm upgrade and smoke test, waits for approval, then deploys to production. Prometheus recording rules feed burn-rate alerts, an incident runbook and an error-budget policy that pauses releases.">
           </button>
           <figcaption>Select the diagram to enlarge it.</figcaption>
         </figure>
         <div class="panel"><h3>Operational workflow</h3><ol>
           <li>CI: unit tests, <code>helm lint</code> and render, image build, Trivy scan that fails on CRITICAL, push to ACR tagged with the build.</li>
           <li>Staging: <code>helm upgrade --install --atomic</code>; a failed rollout rolls back automatically, then a smoke test.</li>
-          <li>Production: environment approval check, then the same atomic upgrade.</li>
-          <li>Operate: burn-rate alerts page on fast error-budget burn and link to an incident runbook; the budget policy freezes risky releases.</li>
+          <li>Production: an Azure DevOps environment with an approval check (set up in the project, not in YAML), then the same atomic upgrade.</li>
+          <li>Operate: burn-rate alerts page on fast error-budget burn and link to an incident runbook; the budget policy pauses feature releases once more than 75% of the budget is spent.</li>
         </ol></div>
       </div>
       <div class="case-facts">
         <div class="panel"><h3>Problem</h3><p>Releases to AKS with no safe rollback, no gate before production and no signal for whether users are affected.</p></div>
         <div class="panel"><h3>Solution</h3><p>A small API packaged as a Helm chart (non-root, liveness and readiness probes, HPA, PodDisruptionBudget), delivered by a multi-stage Azure Pipelines workflow, with a 99.5% / 28-day SLO and multi-window burn-rate alerts.</p></div>
-        <div class="panel"><h3>Technologies</h3><ul class="chips"><li>Azure Pipelines</li><li>AKS</li><li>Helm</li><li>ACR</li><li>Docker</li><li>Trivy</li><li>Prometheus</li><li>Azure Monitor</li><li>OpenSLO</li></ul></div>
+        <div class="panel"><h3>Technologies</h3><ul class="chips"><li>Azure Pipelines</li><li>AKS</li><li>Helm</li><li>ACR</li><li>Docker</li><li>Trivy</li><li>Prometheus</li><li>OpenSLO</li></ul></div>
         <div class="panel verify"><h3>How it was verified</h3><p>Unit tests, <code>helm lint</code>, <code>helm template</code> with production values, and a smoke test of the running app execute in GitHub Actions on every push. Not deployed to a real AKS cluster.</p></div>
       </div>
     </div>
@@ -80,26 +80,26 @@
 <article class="case" id="devsecops" aria-labelledby="devsecops-title">
   <div class="wrap">
     <div class="case-head">
-      <div><p class="kicker violet">CI/CD · DevSecOps</p><h2 id="devsecops-title">GitHub Actions DevSecOps pipeline</h2></div>
+      <div><p class="kicker violet">CI/CD · DevSecOps</p><h2 id="devsecops-title">GitHub Actions DevSecOps pipeline</h2><ul class="vstatus" aria-label="Verification status"><li class="st ok">Runs in GitHub Actions</li><li class="st warn">No cloud deployment</li></ul></div>
       <a class="btn btn-ghost btn-sm" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/github-actions-devsecops" target="_blank" rel="noopener">Source on GitHub ↗</a>
     </div>
     <div class="case-grid">
       <div class="case-facts">
         <figure class="diagram-card" style="margin:0">
           <button class="zoomable" type="button" data-diagram="assets/img/devsecops-pipeline.svg" data-title="GitHub Actions DevSecOps pipeline" aria-label="Enlarge diagram: GitHub Actions DevSecOps pipeline">
-            <img src="assets/img/devsecops-pipeline.svg" width="720" height="350" loading="lazy" alt="A pull request fans out to five parallel jobs: lint, test with coverage gate, SAST, secret scan and dependency audit. A container job then builds, smoke-tests, checks non-root, scans with Trivy and creates an SBOM, before an approval gate and a demo staging environment.">
+            <img src="assets/img/devsecops-pipeline.svg" width="720" height="350" loading="lazy" alt="A pull request fans out to five parallel jobs: lint, test with coverage gate, SAST, secret scan and dependency audit. A container job then builds, smoke-tests, checks non-root, scans with Trivy and creates an SBOM. A manual run on main reaches a demo-staging environment that only prints what it would deploy.">
           </button>
           <figcaption>Select the diagram to enlarge it.</figcaption>
         </figure>
         <div class="panel"><h3>Operational workflow</h3><ol>
           <li>Lint (Ruff with bandit rules), tests with an 80% coverage gate, Bandit SAST, Gitleaks and pip-audit run in parallel.</li>
           <li>Container job: build, smoke test against <code>/healthz</code>, fail if running as root, Trivy fails on fixable CRITICAL CVEs, CycloneDX SBOM saved as an artifact.</li>
-          <li>A manual run on <code>main</code> reaches the <code>demo-staging</code> environment behind an approval.</li>
+          <li>A manual run (<code>workflow_dispatch</code>) on <code>main</code> reaches the <code>demo-staging</code> environment, which only prints what it would deploy.</li>
         </ol></div>
       </div>
       <div class="case-facts">
         <div class="panel"><h3>Problem</h3><p>Vulnerable code, leaked secrets and unsafe container images can reach an environment when security checks are optional or run late.</p></div>
-        <div class="panel"><h3>Solution</h3><p>Every pull request runs five gates in parallel; the container job only starts when all pass, and promotion needs an environment approval. Deployment to Azure is documented with OIDC federated credentials, so no secrets are stored.</p></div>
+        <div class="panel"><h3>Solution</h3><p>Every pull request runs five gates in parallel, and the container job only starts when all of them pass. The path to Azure is documented with OIDC federated credentials, so no secrets would be stored; it is not wired to a subscription.</p></div>
         <div class="panel"><h3>Technologies</h3><ul class="chips"><li>GitHub Actions</li><li>Ruff</li><li>Bandit</li><li>Gitleaks</li><li>pip-audit</li><li>Trivy</li><li>CycloneDX</li><li>Docker</li><li>OIDC</li></ul></div>
         <div class="panel verify"><h3>How it was verified</h3><p>The workflow runs on GitHub-hosted runners for every change to the project; results are on the repository's Actions tab. 8 unit and HTTP tests pass. No registry push or real deployment.</p></div>
       </div>
@@ -110,7 +110,7 @@
 <article class="case" id="terraform-hub-spoke" aria-labelledby="terraform-hub-spoke-title">
   <div class="wrap">
     <div class="case-head">
-      <div><p class="kicker azure">Azure Infrastructure · Infrastructure as Code</p><h2 id="terraform-hub-spoke-title">Terraform hub-and-spoke network on Azure</h2></div>
+      <div><p class="kicker azure">Azure Infrastructure · Infrastructure as Code</p><h2 id="terraform-hub-spoke-title">Terraform hub-and-spoke network on Azure</h2><ul class="vstatus" aria-label="Verification status"><li class="st ok">fmt + validate in CI</li><li class="st warn">Not applied to Azure</li></ul></div>
       <a class="btn btn-ghost btn-sm" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/terraform-hub-spoke" target="_blank" rel="noopener">Source on GitHub ↗</a>
     </div>
     <div class="case-grid">
@@ -140,7 +140,7 @@
 <article class="case" id="sre-observability" aria-labelledby="sre-observability-title">
   <div class="wrap">
     <div class="case-head">
-      <div><p class="kicker amber">Observability · Incident response</p><h2 id="sre-observability-title">SLO burn-rate alerting and incident flow</h2></div>
+      <div><p class="kicker amber">Observability · Incident response</p><h2 id="sre-observability-title">SLO burn-rate alerting and incident flow</h2><ul class="vstatus" aria-label="Verification status"><li class="st ok">Rules tested in CI</li><li class="st info">Synthetic data</li></ul></div>
       <a class="btn btn-ghost btn-sm" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/sre-observability" target="_blank" rel="noopener">Source on GitHub ↗</a>
     </div>
     <div class="case-grid">
