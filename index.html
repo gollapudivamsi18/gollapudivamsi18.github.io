@@ -29,6 +29,7 @@
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><span></span><span></span><span></span></button>
     <nav class="nav" id="site-nav" aria-label="Main">
       <a href="#projects">Projects</a>
+      <a href="#aiops">AIOps</a>
       <a href="#about">Expertise</a>
       <a href="#experience">Experience</a>
       <a href="#certifications">Certifications</a>
@@ -151,11 +152,92 @@
   </div>
 </section>
 
+<section class="section" id="aiops" aria-labelledby="aiops-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow eb-violet">Complementary capability</p>
+        <h2 id="aiops-title">AI-Assisted DevOps &amp; AIOps</h2>
+        <p>Exploring intelligent automation for CI/CD, cloud infrastructure, and site reliability.</p>
+      </div>
+    </div>
+    <p class="ai-legend"><span class="st-key verified">Verified</span> from my resume <span class="st-key proto">Prototype</span> built and tested here <span class="st-key learn">Learning</span> / <span class="st-key explore">Exploring</span> not yet used in production work</p>
+
+    <ol class="flow" aria-label="AI-assisted delivery workflow">
+      <li class="f1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg><span>Code / Infrastructure</span></li>
+      <li class="f2"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M8.5 12h7"/></svg><span>CI/CD Pipeline</span></li>
+      <li class="f3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8z"/></svg><span>AI-Assisted Analysis</span></li>
+      <li class="f4 gate"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.6 3.8-5.5 7-5.5s5.8 1.9 7 5.5"/></svg><span>Human Review</span><em>approval gate</em></li>
+      <li class="f5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg><span>Deployment</span></li>
+      <li class="f6"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6 4 12 2.5-6H21"/></svg><span>Monitoring &amp; Incident Insights</span></li>
+    </ol>
+
+    <div class="ai-grid">
+      <article class="ai-tile t-azure">
+        <div class="ai-tile-head"><h3>GitHub Copilot &amp; DevOps Automation</h3><span class="st-key learn">Learning</span></div>
+        <p>AI-assisted YAML pipelines, Bash and PowerShell scripts and Terraform reviews, treated as drafts until reviewed and tested. Also exploring the <b>Azure DevOps MCP Server</b> for pipeline and work-item context.</p>
+        <p class="builds"><span class="st-key verified">Verified</span> 60+ classic releases moved to GitHub Actions and YAML; Bash and PowerShell automation</p>
+      </article>
+      <article class="ai-tile t-teal">
+        <div class="ai-tile-head"><h3>Intelligent CI/CD Troubleshooting</h3><span class="st-key proto">Prototype</span></div>
+        <p>Summarise failed runs, classify log errors, explain failed tests and suggest fixes for an engineer to approve. Try the prototype below.</p>
+        <p class="builds"><span class="st-key verified">Verified</span> Azure DevOps pipelines for 35+ banking services</p>
+      </article>
+      <article class="ai-tile t-amber">
+        <div class="ai-tile-head"><h3>AI-Powered SRE &amp; Incident Management</h3><span class="st-key explore">Exploring</span></div>
+        <p>Alert correlation, incident summaries, root-cause investigation support, runbook recommendations and operational insights.</p>
+        <p class="builds"><span class="st-key verified">Verified</span> SLOs, 40+ runbooks and 150+ alert rules; MTTR down ~35%</p>
+      </article>
+      <article class="ai-tile t-violet">
+        <div class="ai-tile-head"><h3>AI-Assisted Infrastructure as Code</h3><span class="st-key learn">Learning</span></div>
+        <p>Terraform and Bicep reviews, troubleshooting, security recommendations and drift investigation, with <code>plan</code> output as the source of truth.</p>
+        <p class="builds"><span class="st-key verified">Verified</span> Terraform across 4 environments; Bicep and ARM templates</p>
+      </article>
+      <article class="ai-tile t-sky">
+        <div class="ai-tile-head"><h3>Azure SRE Agent &amp; AIOps</h3><span class="st-key explore">Exploring</span></div>
+        <p>Microsoft's AI operations agent: diagnostics, guided investigation, reliability recommendations and human-approved remediation. Studied, not deployed by me.</p>
+        <p class="builds"><span class="st-key verified">Verified</span> Azure Monitor, Log Analytics and 6 production AKS clusters</p>
+      </article>
+      <article class="ai-tile t-pink">
+        <div class="ai-tile-head"><h3>AI-Assisted DevSecOps</h3><span class="st-key explore">Exploring</span></div>
+        <p>Vulnerability triage, security-finding summaries, secret-detection analysis and safer CI/CD workflows.</p>
+        <p class="builds"><span class="st-key verified">Verified</span> security gates blocked 200+ vulnerable builds; Secure Score 62% → 85%</p>
+      </article>
+    </div>
+
+    <details class="fa-demo" id="failure-demo">
+      <summary class="fa-head">
+        <div>
+          <p class="kicker teal">Prototype · try it</p>
+          <h3>CI/CD failure analysis</h3>
+        </div>
+        <ul class="vstatus" aria-label="How this prototype works"><li class="st ok">Deterministic rules, no AI model</li><li class="st info">Synthetic logs</li><li class="st warn">Human approves every fix</li></ul>
+        <span class="fa-toggle" aria-hidden="true">Open<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+      </summary>
+      <div class="fa-grid">
+        <div class="fa-input">
+          <label for="fa-sample">Sample failure</label>
+          <select id="fa-sample"></select>
+          <label for="fa-log">Pipeline log <small>(edit it or paste your own; nothing leaves your browser)</small></label>
+          <textarea id="fa-log" rows="8" spellcheck="false" autocomplete="off"></textarea>
+          <div class="fa-actions">
+            <button class="btn btn-primary btn-sm" type="button" id="fa-run">Analyse log</button>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/blob/main/assets/js/failure-analyzer.js" target="_blank" rel="noopener">Rules ↗</a>
+          </div>
+        </div>
+        <div class="fa-output" id="fa-out" aria-live="polite">
+          <p class="fa-empty">Choose a sample and select <b>Analyse log</b>.</p>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
 <section class="section" id="about" aria-labelledby="about-title">
   <div class="wrap">
     <div class="section-head">
       <div>
-        <p class="eyebrow">About &amp; expertise</p>
+        <p class="eyebrow eb-teal">About &amp; expertise</p>
         <h2 id="about-title">Infrastructure engineer turned DevOps and SRE</h2>
       </div>
     </div>
@@ -195,7 +277,7 @@
   <div class="wrap">
     <div class="section-head">
       <div>
-        <p class="eyebrow">Professional experience</p>
+        <p class="eyebrow eb-amber">Professional experience</p>
         <h2 id="exp-title">Five roles, 9+ years</h2>
         <p>Select a role for more verified results from my resume.</p>
       </div>
@@ -252,7 +334,7 @@
 
 <section class="section" id="certifications" aria-labelledby="cert-title">
   <div class="wrap">
-    <div class="section-head"><div><p class="eyebrow">Certifications</p><h2 id="cert-title">Certified on Azure and Kubernetes</h2></div></div>
+    <div class="section-head"><div><p class="eyebrow eb-pink">Certifications</p><h2 id="cert-title">Certified on Azure and Kubernetes</h2></div></div>
     <div class="certs">
       <div class="cert reveal"><span class="badge" aria-hidden="true">104</span><div><h3>Azure Administrator Associate</h3><p>Microsoft Certified · AZ-104</p></div></div>
       <div class="cert reveal"><span class="badge" aria-hidden="true">900</span><div><h3>Azure Fundamentals</h3><p>Microsoft Certified · AZ-900</p></div></div>
@@ -293,6 +375,8 @@
 </footer>
 
 <script src="assets/js/site.js" defer></script>
+<script src="assets/js/failure-analyzer.js" defer></script>
+<script src="assets/js/failure-demo.js" defer></script>
 <script src="assets/js/assistant-core.js" defer></script>
 <script src="assets/js/assistant-ui.js" defer></script>
 </body>
