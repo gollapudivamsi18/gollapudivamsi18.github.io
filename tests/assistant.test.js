@@ -33,6 +33,10 @@ test("routes recruiter questions to the right topic", () => {
     "Are you a real person?": "assistant",
     "What is his education?": "education",
     "Azure Migrate and Site Recovery work": "migration",
+    "Is he a frontend developer?": "identity",
+    "Does he do UI/UX design?": "identity",
+    "Explain the Terraform hub and spoke demo": "hub-spoke-demo",
+    "How does the burn-rate alerting project work?": "sre-demo",
   };
   for (const [q, id] of Object.entries(cases)) {
     const r = new Conversation(kb).ask(q);
@@ -69,7 +73,7 @@ test("a new subject switches topic even mid-conversation", () => {
 
 test("suggestion chips select a topic directly", () => {
   const c = new Conversation(kb);
-  assert.strictEqual(c.ask({ topic: "migration-demo" }).topic, "migration-demo");
+  assert.strictEqual(c.ask({ topic: "aks-demo" }).topic, "aks-demo");
 });
 
 test("unknown questions get the honest fallback, not a guess", () => {
@@ -78,9 +82,24 @@ test("unknown questions get the honest fallback, not a guess", () => {
   assert.match(r.text, /won't guess/);
 });
 
+test("identity: never presented as a frontend or UI/UX professional", () => {
+  const all = JSON.stringify(kb);
+  assert.ok(!/(is|as) an? (frontend|front-end|ui\/ux|web) (developer|designer|engineer)/i.test(all.replace(/not seeking[^.]*\./gi, "")));
+  const r = new Conversation(kb).ask("Is he a web designer?");
+  assert.match(r.text, /^No\./);
+});
+
+test("only the four retained projects are described", () => {
+  const ids = kb.topics.map((t) => t.id);
+  for (const gone of ["banking-demo", "migration-demo", "server-ops-demo", "patching-demo"]) {
+    assert.ok(!ids.includes(gone), `${gone} should be removed`);
+  }
+  assert.match(new Conversation(kb).ask("What projects are in the portfolio?").text, /four featured projects/);
+});
+
 test("small talk", () => {
   const c = new Conversation(kb);
-  assert.match(c.ask("Hello").text, /Portfolio AI Assistant/);
+  assert.match(c.ask("Hello").text, /AI assistant for Vamsikrishna/);
   assert.match(c.ask("thanks").text, /welcome/);
   assert.strictEqual(c.ask("").topic, null);
 });
