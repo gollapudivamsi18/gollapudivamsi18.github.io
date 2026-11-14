@@ -1,6 +1,6 @@
 # Portfolio redesign v3 — progress
 
-Owner: Vamsikrishna Gollapudi · Updated: 14 Nov 2026 (final polish pass) · Live: https://gollapudivamsi18.github.io/
+Owner: Vamsikrishna Gollapudi · Updated: 14 Nov 2026 (AI-assisted DevOps addition) · Live: https://gollapudivamsi18.github.io/
 
 ## Completed
 - Full visual redesign: dark navy / Azure blue theme, compact layout, no third-party assets.
@@ -96,10 +96,33 @@ Deployment of the polish pass — LIVE (verified 14 Nov 2026):
 - GitHub profile README (gollapudivamsi18/gollapudivamsi18) updated in the web editor to list the four projects.
 - Last fix: the assistant panel height is capped so it never covers the site header on short screens.
 
+## AI-Assisted DevOps & AIOps addition (14 Nov 2026, third pass)
+Scope: a compact, complementary section; hero, roles, projects, resume and experience unchanged.
+- New homepage section `#aiops` (between Projects and Expertise; nav link "AIOps"): subtitle, status legend,
+  six-step workflow strip (Code / Infrastructure → CI/CD → AI-Assisted Analysis → Human Review → Deployment →
+  Monitoring & Incident Insights), six capability tiles.
+- Status labels are honest: the resume lists no AI tooling, so Copilot and AI-assisted IaC are **Learning**;
+  AIOps/incident AI, Azure SRE Agent and AI-assisted DevSecOps are **Exploring**; CI/CD troubleshooting is a
+  **Prototype**. Each tile carries a **Verified** line taken from the resume (e.g. 35+ pipelines, 40+ runbooks).
+- Azure DevOps MCP Server mentioned in the Copilot tile (remote server GA 5 Aug 2026); Azure SRE Agent described
+  as GA since Mar 2026 and "studied, not deployed by me". Sources: Microsoft DevOps blog and Tech Community.
+- Prototype "CI/CD failure analysis" (collapsible, closed by default): `assets/js/failure-analyzer.js` (9
+  deterministic rules, no AI model, no network, synthetic logs) + `assets/js/failure-demo.js` (UI, textContent
+  only). Finds failing step, first error, exit code; suggests steps; Approve/Reject is simulated and executes nothing.
+- Assistant: 8 new topics (AI in pipelines/MCP, AIOps, AI for Terraform, Copilot, Azure SRE Agent, AI in
+  incidents, his AI experience, the prototype). Each separates general capability from "His own status".
+- Colour: gradient header line, coloured metric/project/skill borders, per-section eyebrow colours,
+  coloured experience dates and certification badges; new tokens --sky, --pink, --green.
+- Tests: `tests/failure-analyzer.test.js` (5 groups), assistant tests (11 groups), responsive check now opens the
+  prototype at every width; accessibility, voice and panel checks re-run — all pass.
+- Deployed in seven commits (connector for new files; GitHub web editor for edits and the workflow, which
+  now also runs `node tests/failure-analyzer.test.js`).
+
 ## Continuation instructions
 1. Read this file. Site is static; edit `index.html`, `projects.html`, `resume.html`, `assets/`.
 2. Diagrams: edit `tools/make_diagrams.py`, run `python3 tools/make_diagrams.py`.
 3. Assistant facts: `assets/data/knowledge.json`; run `node tests/assistant.test.js` after edits.
+   Failure-analysis rules: `assets/js/failure-analyzer.js`; run `node tests/failure-analyzer.test.js`.
 4. Run `python3 tests/responsive_check.py /path/to/chrome` before pushing.
 5. Workflow files under `.github/workflows/` cannot be written by the GitHub connector; edit them in the
    GitHub web editor.
