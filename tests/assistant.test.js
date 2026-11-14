@@ -39,11 +39,34 @@ test("routes recruiter questions to the right topic", () => {
     "How does the burn-rate alerting project work?": "sre-demo",
     "Explain the architecture diagram": "architecture",
     "Is this a real AI?": "assistant",
+    "How can AI improve Azure DevOps pipelines?": "ai-pipelines",
+    "What is AIOps in SRE?": "aiops",
+    "How can AI assist Terraform automation?": "ai-terraform",
+    "How can GitHub Copilot support DevOps engineers?": "copilot",
+    "What is Azure SRE Agent?": "sre-agent",
+    "How does AI assist incident management?": "ai-incident",
+    "Is he an AI engineer?": "ai-experience",
+    "What is the Azure DevOps MCP Server?": "ai-pipelines",
+    "Explain the failure analysis prototype": "failure-demo",
   };
   for (const [q, id] of Object.entries(cases)) {
     const r = new Conversation(kb).ask(q);
     assert.strictEqual(r.topic, id, `"${q}" -> ${r.topic}, expected ${id}`);
   }
+});
+
+test("AI topics separate general capability from his verified experience", () => {
+  const ids = ["ai-pipelines", "aiops", "ai-terraform", "copilot", "sre-agent", "ai-incident"];
+  for (const id of ids) {
+    const t = kb.topics.find((x) => x.id === id);
+    assert.ok(t, `missing topic ${id}`);
+    const all = [t.answer].concat(t.more).join(" ");
+    assert.match(all, /His own status: (Learning|Exploring|pipelines|the SRE|Terraform|incident)/, `${id} lacks a personal status line`);
+    assert.doesNotMatch(all, /\b(he|Vamsikrishna) (deployed|implemented|built) (an? )?(AI|Azure SRE Agent|AIOps)/i, `${id} overclaims`);
+  }
+  const exp = new Conversation(kb).ask("Is he a machine learning engineer?");
+  assert.strictEqual(exp.topic, "ai-experience");
+  assert.match(exp.text, /not an AI or machine-learning engineer/);
 });
 
 test("follow-ups continue the current topic and walk through extra detail", () => {
