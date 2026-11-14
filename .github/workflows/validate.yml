@@ -112,8 +112,8 @@ jobs:
         run: docker compose -f demos/sre-observability/docker-compose.yml config --quiet
 
   public-site:
-    # The public site must stay view-only: no resume files, no download links,
-    # and no phone number or email on the resume page.
+    # Only the owner-approved Word resume may be published; no other document files or
+    # download links, and no phone number or email on the resume web page.
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -121,12 +121,13 @@ jobs:
       - name: No resume files or download links in the published site
         run: |
           set -e
-          files=$(git ls-files | grep -iE '\.(docx?|pdf|rtf|odt)$' || true)
+          files=$(git ls-files | grep -iE '\.(docx?|pdf|rtf|odt)$' | grep -vx 'assets/resume/Vamsikrishna_Gollapudi_Azure_DevOps_SRE_Remote_Resume.docx' || true)
           if [ -n "$files" ]; then echo "Document files found:"; echo "$files"; exit 1; fi
-          if grep -niE 'download(=|\s*>)|\.(docx|pdf)"' index.html resume.html projects.html; then
+          if grep -niE 'download(=|\s*>)|\.(docx|pdf)"' index.html resume.html projects.html | grep -v 'assets/resume/Vamsikrishna_Gollapudi_Azure_DevOps_SRE_Remote_Resume.docx'; then
             echo "Download link found"; exit 1
           fi
           if grep -niE 'mailto:|\+91|[0-9]{10}' resume.html; then
             echo "Contact details found on the public resume page"; exit 1
           fi
-          echo "Public site is view-only."
+          test -f assets/resume/Vamsikrishna_Gollapudi_Azure_DevOps_SRE_Remote_Resume.docx
+          echo "Public site checks passed."
