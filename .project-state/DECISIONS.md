@@ -45,3 +45,12 @@ into `.github/workflows/` through the GitHub web editor in the owner's browser.
 ## D9 — Third-party actions pinned by commit SHA where tags proved unsafe
 `aquasecurity/trivy-action` is pinned to the v0.36.0 commit SHA. Its unprefixed tags were hijacked
 in March 2026 and later removed, so a tag reference is neither stable nor trustworthy.
+
+## D10 — v3 redesign keeps four projects (14 Nov 2026)
+At the owner's request the portfolio keeps only the four strongest projects (aks-helm-sre,
+github-actions-devsecops, terraform-hub-spoke, sre-observability). The other four demos were removed
+from `main`; they remain on branch `archive/portfolio-v2-all-demos`. See `PROJECT_PROGRESS.md`.
+
+## D11 — Assistant is a floating widget
+The large assistant section was replaced by a small bottom-right widget on every page. Same
+in-browser engine and knowledge base; the knowledge base loads on first open.
