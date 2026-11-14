@@ -3,221 +3,182 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portfolio Projects | Vamsikrishna Gollapudi</title>
-<meta name="description" content="Eight independent Azure DevOps, SRE, Azure infrastructure, Windows and Linux demos with architecture diagrams, tests and honest limits.">
+<title>Projects — AKS, DevSecOps, Terraform and SRE | Vamsikrishna Gollapudi</title>
+<meta name="description" content="Azure DevOps and SRE projects by Vamsikrishna Gollapudi: AKS and Helm delivery with SLOs, a GitHub Actions DevSecOps pipeline, a Terraform hub-and-spoke network on Azure, and SLO burn-rate alerting with Prometheus and Grafana.">
 <link rel="canonical" href="https://gollapudivamsi18.github.io/projects.html">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://gollapudivamsi18.github.io/projects.html">
-<meta property="og:title" content="Portfolio Projects | Vamsikrishna Gollapudi">
-<meta property="og:description" content="Azure DevOps, SRE and Azure infrastructure demos with architecture diagrams and tests.">
-<meta name="theme-color" content="#13213d">
+<meta property="og:title" content="Projects — Vamsikrishna Gollapudi, Azure DevOps and SRE">
+<meta property="og:description" content="Four tested projects with architecture diagrams: AKS + Helm, DevSecOps, Terraform hub-and-spoke, SLO alerting.">
+<meta name="theme-color" content="#060d1c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a6fd6'/%3E%3Ctext x='16' y='21' font-family='monospace' font-size='13' font-weight='700' fill='white' text-anchor='middle'%3EVG%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/css/site.css">
+<script>document.documentElement.className += " js";</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="./">Vamsikrishna Gollapudi</a>
-    <button class="menu-btn ghost" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <a class="brand" href="./" aria-label="Vamsikrishna Gollapudi, home"><span class="brand-mark" aria-hidden="true">VG</span><span>Vamsikrishna Gollapudi<small>Azure DevOps · SRE · Azure Infrastructure</small></span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><span></span><span></span><span></span></button>
     <nav class="nav" id="site-nav" aria-label="Main">
-      <a href="./#expertise">Expertise</a>
-      <a href="./#experience">Experience</a>
+      <a href="./">Home</a>
       <a href="projects.html" aria-current="page">Projects</a>
-      <a href="./#certifications">Certifications</a>
-      <a href="./#assistant-section">Assistant</a>
-      <a href="resume.html">Resume</a>
+      <a href="./#experience">Experience</a>
       <a href="./#contact">Contact</a>
+      <a class="nav-cta" href="resume.html">Resume</a>
     </nav>
   </div>
 </header>
+
 <main id="main">
-<section class="block">
+<section class="page-head">
   <div class="wrap">
     <p class="eyebrow">Projects</p>
-    <h1>Eight demos, with diagrams and tests</h1>
-    <p class="lead">These are independent demos I built on fictional systems and synthetic data. They are not client or employer work, and none runs in a real Azure subscription. Each section says how it was tested and where it stops. Grouped by my focus areas: Azure DevOps and SRE first, then Azure infrastructure, then Windows and Linux.</p>
-    <ul class="toc"><li><a href="#devsecops">GitHub Actions DevSecOps pipeline</a></li><li><a href="#banking-pipeline">Azure Pipelines for a Transaction API</a></li><li><a href="#sre-observability">SRE observability and incident management</a></li><li><a href="#aks-helm-sre">AKS + Helm delivery with SRE practices</a></li><li><a href="#terraform-hub-spoke">Terraform hub-and-spoke network</a></li><li><a href="#migration-plan">Windows and Linux migration plan to Azure</a></li><li><a href="#server-ops-toolkit">Windows and Linux server ops toolkit</a></li><li><a href="#patching-lab">Patching and OS upgrade lab</a></li></ul>
+    <h1>Four projects, each with its architecture</h1>
+    <p>Independent demos built to show how I design delivery, infrastructure and reliability on Azure. They use fictional systems and synthetic data, are not client work, and are not deployed to a live Azure subscription. All code, pipelines and tests are in the <a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos" target="_blank" rel="noopener">repository</a>; each project states exactly how it was verified.</p>
+    <ul class="jump" aria-label="Jump to a project">
+      <li><a href="#aks-helm-sre">AKS + Helm with SRE</a></li>
+      <li><a href="#devsecops">GitHub Actions DevSecOps</a></li>
+      <li><a href="#terraform-hub-spoke">Terraform hub-and-spoke</a></li>
+      <li><a href="#sre-observability">SLO burn-rate alerting</a></li>
+    </ul>
   </div>
 </section>
-<section class="block">
+
+<article class="case" id="aks-helm-sre" aria-labelledby="aks-helm-sre-title">
   <div class="wrap">
-<article class="project" id="devsecops" aria-labelledby="devsecops-title">
-  <p class="eyebrow">Azure DevOps and SRE</p>
-  <h2 id="devsecops-title">GitHub Actions DevSecOps pipeline</h2>
-  <div class="project-grid">
-    <div>
-      <p>A pull-request pipeline that checks code, dependencies, secrets and the container image before anything moves toward an environment.</p>
-      <h3>What it shows</h3>
-      <ul><li>Five parallel quality and security jobs, then a container job that only runs if all five pass.</li><li>Container smoke test, non-root check, Trivy gate on fixable critical CVEs and an SBOM as a build artifact.</li><li>A manual promotion step into a protected environment, plus a written guide to OIDC login to Azure without stored secrets.</li></ul>
-      <dl class="meta">
-        <dt>Tested</dt><dd>8 unit and HTTP tests pass locally. The workflow file is ready in the repository and runs on GitHub-hosted runners once enabled.</dd>
-        <dt>Limits</dt><dd>No registry push or real deployment; actions pinned to release tags rather than commit SHAs.</dd>
-      </dl>
-      <ul class="tags" aria-label="Technology"><li>GitHub Actions</li><li>Python</li><li>Docker</li><li>Ruff</li><li>Bandit</li><li>Gitleaks</li><li>pip-audit</li><li>Trivy</li><li>CycloneDX</li></ul>
-      <p style="margin-top:14px"><a class="btn ghost" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/github-actions-devsecops" target="_blank" rel="noopener">Code and README on GitHub</a></p>
+    <div class="case-head">
+      <div><p class="kicker teal">Kubernetes · Azure DevOps · SRE</p><h2 id="aks-helm-sre-title">AKS + Helm delivery with SRE guardrails</h2></div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/aks-helm-sre" target="_blank" rel="noopener">Source on GitHub ↗</a>
     </div>
-    <figure class="diagram">
-      <a href="assets/img/devsecops-pipeline.svg" target="_blank" rel="noopener"><img src="assets/img/devsecops-pipeline.svg" alt="Architecture diagram: GitHub Actions DevSecOps pipeline" loading="lazy" width="560" height="600"></a>
-      <figcaption>Diagram of the demo as built. Open it full size for detail; the text description is in the image's accessible title.</figcaption>
-    </figure>
+    <div class="case-grid">
+      <div class="case-facts">
+        <figure class="diagram-card" style="margin:0">
+          <button class="zoomable" type="button" data-diagram="assets/img/aks-sre-architecture.svg" data-title="AKS + Helm delivery with SRE guardrails" aria-label="Enlarge diagram: AKS + Helm delivery with SRE guardrails">
+            <img src="assets/img/aks-sre-architecture.svg" width="720" height="330" alt="Azure Pipelines runs tests, helm lint and an image scan, pushes to ACR, deploys to AKS staging with an atomic Helm upgrade and smoke test, waits for approval, then deploys to production. Prometheus and Azure Monitor feed burn-rate alerts, an incident runbook and an error-budget policy that can freeze releases.">
+          </button>
+          <figcaption>Select the diagram to enlarge it.</figcaption>
+        </figure>
+        <div class="panel"><h3>Operational workflow</h3><ol>
+          <li>CI: unit tests, <code>helm lint</code> and render, image build, Trivy scan that fails on CRITICAL, push to ACR tagged with the build.</li>
+          <li>Staging: <code>helm upgrade --install --atomic</code>; a failed rollout rolls back automatically, then a smoke test.</li>
+          <li>Production: environment approval check, then the same atomic upgrade.</li>
+          <li>Operate: burn-rate alerts page on fast error-budget burn and link to an incident runbook; the budget policy freezes risky releases.</li>
+        </ol></div>
+      </div>
+      <div class="case-facts">
+        <div class="panel"><h3>Problem</h3><p>Releases to AKS with no safe rollback, no gate before production and no signal for whether users are affected.</p></div>
+        <div class="panel"><h3>Solution</h3><p>A small API packaged as a Helm chart (non-root, liveness and readiness probes, HPA, PodDisruptionBudget), delivered by a multi-stage Azure Pipelines workflow, with a 99.5% / 28-day SLO and multi-window burn-rate alerts.</p></div>
+        <div class="panel"><h3>Technologies</h3><ul class="chips"><li>Azure Pipelines</li><li>AKS</li><li>Helm</li><li>ACR</li><li>Docker</li><li>Trivy</li><li>Prometheus</li><li>Azure Monitor</li><li>OpenSLO</li></ul></div>
+        <div class="panel verify"><h3>How it was verified</h3><p>Unit tests, <code>helm lint</code>, <code>helm template</code> with production values, and a smoke test of the running app execute in GitHub Actions on every push. Not deployed to a real AKS cluster.</p></div>
+      </div>
+    </div>
   </div>
 </article>
-<article class="project" id="banking-pipeline" aria-labelledby="banking-pipeline-title">
-  <p class="eyebrow">Azure DevOps and SRE</p>
-  <h2 id="banking-pipeline-title">Azure Pipelines for a Transaction API</h2>
-  <div class="project-grid">
-    <div>
-      <p>A multi-stage Azure Pipelines workflow for a fictional bank&#x27;s transfer API, built around audit-friendly promotion.</p>
-      <h3>What it shows</h3>
-      <ul><li>Pull-request checks: unit tests, syntax check and a quality-gate step.</li><li>One versioned package promoted Dev → UAT → Prod, with an approval and business-hours check before production.</li><li>A documented rollback to the last good package in under 15 minutes, and idempotent transfer logic.</li></ul>
-      <dl class="meta">
-        <dt>Tested</dt><dd>Python unit tests and YAML parsing run in GitHub Actions on every push.</dd>
-        <dt>Limits</dt><dd>The pipeline YAML is validated for syntax, not run against a real Azure DevOps organisation.</dd>
-      </dl>
-      <ul class="tags" aria-label="Technology"><li>Azure Pipelines YAML</li><li>Azure Repos branch policies</li><li>Python</li></ul>
-      <p style="margin-top:14px"><a class="btn ghost" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/banking-pipeline" target="_blank" rel="noopener">Code and README on GitHub</a></p>
+
+<article class="case" id="devsecops" aria-labelledby="devsecops-title">
+  <div class="wrap">
+    <div class="case-head">
+      <div><p class="kicker violet">CI/CD · DevSecOps</p><h2 id="devsecops-title">GitHub Actions DevSecOps pipeline</h2></div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/github-actions-devsecops" target="_blank" rel="noopener">Source on GitHub ↗</a>
     </div>
-    <figure class="diagram">
-      <a href="assets/img/banking-pipeline.svg" target="_blank" rel="noopener"><img src="assets/img/banking-pipeline.svg" alt="Architecture diagram: Azure Pipelines for a Transaction API" loading="lazy" width="560" height="600"></a>
-      <figcaption>Diagram of the demo as built. Open it full size for detail; the text description is in the image's accessible title.</figcaption>
-    </figure>
+    <div class="case-grid">
+      <div class="case-facts">
+        <figure class="diagram-card" style="margin:0">
+          <button class="zoomable" type="button" data-diagram="assets/img/devsecops-pipeline.svg" data-title="GitHub Actions DevSecOps pipeline" aria-label="Enlarge diagram: GitHub Actions DevSecOps pipeline">
+            <img src="assets/img/devsecops-pipeline.svg" width="720" height="350" loading="lazy" alt="A pull request fans out to five parallel jobs: lint, test with coverage gate, SAST, secret scan and dependency audit. A container job then builds, smoke-tests, checks non-root, scans with Trivy and creates an SBOM, before an approval gate and a demo staging environment.">
+          </button>
+          <figcaption>Select the diagram to enlarge it.</figcaption>
+        </figure>
+        <div class="panel"><h3>Operational workflow</h3><ol>
+          <li>Lint (Ruff with bandit rules), tests with an 80% coverage gate, Bandit SAST, Gitleaks and pip-audit run in parallel.</li>
+          <li>Container job: build, smoke test against <code>/healthz</code>, fail if running as root, Trivy fails on fixable CRITICAL CVEs, CycloneDX SBOM saved as an artifact.</li>
+          <li>A manual run on <code>main</code> reaches the <code>demo-staging</code> environment behind an approval.</li>
+        </ol></div>
+      </div>
+      <div class="case-facts">
+        <div class="panel"><h3>Problem</h3><p>Vulnerable code, leaked secrets and unsafe container images can reach an environment when security checks are optional or run late.</p></div>
+        <div class="panel"><h3>Solution</h3><p>Every pull request runs five gates in parallel; the container job only starts when all pass, and promotion needs an environment approval. Deployment to Azure is documented with OIDC federated credentials, so no secrets are stored.</p></div>
+        <div class="panel"><h3>Technologies</h3><ul class="chips"><li>GitHub Actions</li><li>Ruff</li><li>Bandit</li><li>Gitleaks</li><li>pip-audit</li><li>Trivy</li><li>CycloneDX</li><li>Docker</li><li>OIDC</li></ul></div>
+        <div class="panel verify"><h3>How it was verified</h3><p>The workflow runs on GitHub-hosted runners for every change to the project; results are on the repository's Actions tab. 8 unit and HTTP tests pass. No registry push or real deployment.</p></div>
+      </div>
+    </div>
   </div>
 </article>
-<article class="project" id="sre-observability" aria-labelledby="sre-observability-title">
-  <p class="eyebrow">Azure DevOps and SRE</p>
-  <h2 id="sre-observability-title">SRE observability and incident management</h2>
-  <div class="project-grid">
-    <div>
-      <p>SLO-based monitoring for a small service: alert on error-budget burn, route pages and tickets differently, and close the loop with a runbook and review.</p>
-      <h3>What it shows</h3>
-      <ul><li>Recording rules and multi-window burn-rate alerts (14.4x over 1h and 5m, 6x over 6h and 30m) with promtool unit tests.</li><li>An error-budget calculator: on the synthetic incident it reports 47.4% of the budget used and a page at 34x burn.</li><li>A Grafana dashboard, two runbooks, a fictional RCA and a reusable RCA template.</li></ul>
-      <dl class="meta">
-        <dt>Tested</dt><dd>11 Python tests pass locally. Rule tests use promtool in CI once the updated workflow is enabled.</dd>
-        <dt>Limits</dt><dd>Single service and SLI; synthetic traffic only; no long-term metrics storage.</dd>
-      </dl>
-      <ul class="tags" aria-label="Technology"><li>Prometheus</li><li>Alertmanager</li><li>Grafana</li><li>Python</li><li>Docker Compose</li></ul>
-      <p style="margin-top:14px"><a class="btn ghost" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/sre-observability" target="_blank" rel="noopener">Code and README on GitHub</a></p>
+
+<article class="case" id="terraform-hub-spoke" aria-labelledby="terraform-hub-spoke-title">
+  <div class="wrap">
+    <div class="case-head">
+      <div><p class="kicker azure">Azure Infrastructure · Infrastructure as Code</p><h2 id="terraform-hub-spoke-title">Terraform hub-and-spoke network on Azure</h2></div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/terraform-hub-spoke" target="_blank" rel="noopener">Source on GitHub ↗</a>
     </div>
-    <figure class="diagram">
-      <a href="assets/img/sre-observability.svg" target="_blank" rel="noopener"><img src="assets/img/sre-observability.svg" alt="Architecture diagram: SRE observability and incident management" loading="lazy" width="560" height="600"></a>
-      <figcaption>Diagram of the demo as built. Open it full size for detail; the text description is in the image's accessible title.</figcaption>
-    </figure>
+    <div class="case-grid">
+      <div class="case-facts">
+        <figure class="diagram-card" style="margin:0">
+          <button class="zoomable" type="button" data-diagram="assets/img/hub-spoke.svg" data-title="Terraform hub-and-spoke network on Azure" aria-label="Enlarge diagram: Terraform hub-and-spoke network on Azure">
+            <img src="assets/img/hub-spoke.svg" width="720" height="380" loading="lazy" alt="Terraform provisions a hub VNet with firewall, gateway and shared-services subnets, Log Analytics and a backup vault; two spokes peer only with the hub and use default-deny NSGs; a private DNS zone links to both spokes; optional on-premises VPN and DR region.">
+          </button>
+          <figcaption>Select the diagram to enlarge it.</figcaption>
+        </figure>
+        <div class="panel"><h3>Operational workflow</h3><ol>
+          <li>Inputs validated in <code>variables.tf</code> with safe defaults; standard tags defined once in <code>locals</code>.</li>
+          <li><code>terraform fmt -check</code>, <code>init -backend=false</code> and <code>validate</code> run in CI on every push.</li>
+          <li>The paid firewall and VPN gateway are deliberately not created; DR and cost levers are documented with RTO/RPO targets.</li>
+        </ol></div>
+      </div>
+      <div class="case-facts">
+        <div class="panel"><h3>Problem</h3><p>Networks built by hand drift between environments, let workloads talk to each other freely and are hard to audit for tags, backup and cost.</p></div>
+        <div class="panel"><h3>Solution</h3><p>A hub VNet with firewall, gateway and shared-services subnets; spokes that peer only with the hub; NSGs that default to deny; a private DNS zone; one tag set on every resource; a Recovery Services vault with a daily policy and an optional DR vault.</p></div>
+        <div class="panel"><h3>Technologies</h3><ul class="chips"><li>Terraform</li><li>azurerm</li><li>VNet peering</li><li>NSG</li><li>Private DNS</li><li>Log Analytics</li><li>Azure Backup</li><li>Site Recovery</li></ul></div>
+        <div class="panel verify"><h3>How it was verified</h3><p><code>terraform fmt</code> and <code>terraform validate</code> pass in GitHub Actions. <code>plan</code> and <code>apply</code> need an Azure subscription and are out of scope.</p></div>
+      </div>
+    </div>
   </div>
 </article>
-<article class="project" id="aks-helm-sre" aria-labelledby="aks-helm-sre-title">
-  <p class="eyebrow">Azure DevOps and SRE</p>
-  <h2 id="aks-helm-sre-title">AKS + Helm delivery with SRE practices</h2>
-  <div class="project-grid">
-    <div>
-      <p>A containerised API packaged for AKS and delivered through a staged pipeline with an SLO and an incident runbook.</p>
-      <h3>What it shows</h3>
-      <ul><li>Helm chart with liveness and readiness probes, non-root user, HPA and PodDisruptionBudget.</li><li>CI with unit tests, helm lint and image scan; staging deploy with helm upgrade --atomic; approval before production.</li><li>A 99.5% availability SLO over 28 days with burn-rate alerts and an on-call runbook.</li></ul>
-      <dl class="meta">
-        <dt>Tested</dt><dd>helm lint, helm template, unit tests and a local smoke test of the API run in GitHub Actions.</dd>
-        <dt>Limits</dt><dd>Not deployed to a real AKS cluster; ingress and cluster provisioning are described, not built.</dd>
-      </dl>
-      <ul class="tags" aria-label="Technology"><li>AKS</li><li>Helm</li><li>Docker</li><li>Azure Pipelines</li><li>Prometheus</li></ul>
-      <p style="margin-top:14px"><a class="btn ghost" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/aks-helm-sre" target="_blank" rel="noopener">Code and README on GitHub</a></p>
+
+<article class="case" id="sre-observability" aria-labelledby="sre-observability-title">
+  <div class="wrap">
+    <div class="case-head">
+      <div><p class="kicker amber">Observability · Incident response</p><h2 id="sre-observability-title">SLO burn-rate alerting and incident flow</h2></div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/sre-observability" target="_blank" rel="noopener">Source on GitHub ↗</a>
     </div>
-    <figure class="diagram">
-      <a href="assets/img/aks-sre-architecture.svg" target="_blank" rel="noopener"><img src="assets/img/aks-sre-architecture.svg" alt="Architecture diagram: AKS + Helm delivery with SRE practices" loading="lazy" width="560" height="600"></a>
-      <figcaption>Diagram of the demo as built. Open it full size for detail; the text description is in the image's accessible title.</figcaption>
-    </figure>
+    <div class="case-grid">
+      <div class="case-facts">
+        <figure class="diagram-card" style="margin:0">
+          <button class="zoomable" type="button" data-diagram="assets/img/sre-observability.svg" data-title="SLO burn-rate alerting and incident flow" aria-label="Enlarge diagram: SLO burn-rate alerting and incident flow">
+            <img src="assets/img/sre-observability.svg" width="720" height="350" loading="lazy" alt="An instrumented orders service is scraped by Prometheus; recording rules feed burn-rate alerts tested with promtool; Alertmanager routes to page or ticket; Grafana shows the SLO dashboard; runbooks and a blameless RCA close the loop; an offline error-budget calculator can gate releases.">
+          </button>
+          <figcaption>Select the diagram to enlarge it.</figcaption>
+        </figure>
+        <div class="panel"><h3>Operational workflow</h3><ol>
+          <li>The service exposes Prometheus metrics; errors and latency can be injected to rehearse incidents.</li>
+          <li>Recording rules compute error ratios over 5m, 30m, 1h and 6h; alert rules are unit-tested with <code>promtool</code>.</li>
+          <li>Pages link to runbooks for budget burn and latency; incidents end in a blameless RCA from a template.</li>
+          <li>An offline calculator reports budget used and exits with code 2 on a page-level burn, so it can gate a release.</li>
+        </ol></div>
+      </div>
+      <div class="case-facts">
+        <div class="panel"><h3>Problem</h3><p>Alerts on raw error spikes page people for blips and still miss slow, steady budget burn.</p></div>
+        <div class="panel"><h3>Solution</h3><p>An SLI (non-5xx share of requests) and a 99.5% / 30-day SLO with multi-window burn-rate alerts: page at 14.4x over 1h and 5m or 6x over 6h and 30m, ticket at 1x over 3 days. Alertmanager separates pages from tickets and suppresses noise when the target is down.</p></div>
+        <div class="panel"><h3>Technologies</h3><ul class="chips"><li>Prometheus</li><li>Alertmanager</li><li>Grafana</li><li>promtool</li><li>Docker Compose</li><li>Python</li><li>SLI/SLO</li></ul></div>
+        <div class="panel verify"><h3>How it was verified</h3><p>11 Python tests pass; <code>promtool check</code> and <code>test rules</code>, <code>amtool check-config</code> and the Compose file are checked in GitHub Actions. On the synthetic data the calculator reports 47.4% of the budget used and a 34x page-level burn (synthetic numbers, not a real system).</p></div>
+      </div>
+    </div>
   </div>
 </article>
-<article class="project" id="terraform-hub-spoke" aria-labelledby="terraform-hub-spoke-title">
-  <p class="eyebrow">Azure cloud infrastructure</p>
-  <h2 id="terraform-hub-spoke-title">Terraform hub-and-spoke network</h2>
-  <div class="project-grid">
-    <div>
-      <p>Hub-and-spoke Azure networking for a fictional asset-management platform, written as Terraform.</p>
-      <h3>What it shows</h3>
-      <ul><li>Hub with firewall, gateway and shared-services subnets; two spokes peered only with the hub; deny-by-default NSGs.</li><li>One tag block applied to every resource.</li><li>Backup policy, optional DR vault, and a cost and RTO/RPO discussion.</li></ul>
-      <dl class="meta">
-        <dt>Tested</dt><dd>terraform fmt and terraform validate run in GitHub Actions.</dd>
-        <dt>Limits</dt><dd>Not applied to a real subscription; remote state is documented rather than configured.</dd>
-      </dl>
-      <ul class="tags" aria-label="Technology"><li>Terraform</li><li>Azure VNet</li><li>NSG</li><li>Private DNS</li><li>Recovery Services vault</li><li>Log Analytics</li></ul>
-      <p style="margin-top:14px"><a class="btn ghost" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/terraform-hub-spoke" target="_blank" rel="noopener">Code and README on GitHub</a></p>
-    </div>
-    <figure class="diagram">
-      <a href="assets/img/hub-spoke.svg" target="_blank" rel="noopener"><img src="assets/img/hub-spoke.svg" alt="Architecture diagram: Terraform hub-and-spoke network" loading="lazy" width="560" height="600"></a>
-      <figcaption>Diagram of the demo as built. Open it full size for detail; the text description is in the image's accessible title.</figcaption>
-    </figure>
-  </div>
-</article>
-<article class="project" id="migration-plan" aria-labelledby="migration-plan-title">
-  <p class="eyebrow">Azure cloud infrastructure</p>
-  <h2 id="migration-plan-title">Windows and Linux migration plan to Azure</h2>
-  <div class="project-grid">
-    <div>
-      <p>How I plan a lift-and-shift: inventory, dependencies, waves, cutover and rollback, shown on 12 fictional servers.</p>
-      <h3>What it shows</h3>
-      <ul><li>A sample inventory and a port-level dependency map.</li><li>A script that groups dependent servers into waves, with shared services first and critical systems last.</li><li>Cutover checks for Windows, Linux, Azure and the application, plus a rollback runbook with a clear decision rule.</li></ul>
-      <dl class="meta">
-        <dt>Tested</dt><dd>The wave planner&#x27;s unit tests run in GitHub Actions.</dd>
-        <dt>Limits</dt><dd>Planning artefacts only; no Azure Migrate project or replication is set up.</dd>
-      </dl>
-      <ul class="tags" aria-label="Technology"><li>Azure Migrate</li><li>Azure Site Recovery</li><li>Python</li><li>CSV</li></ul>
-      <p style="margin-top:14px"><a class="btn ghost" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/migration-plan" target="_blank" rel="noopener">Code and README on GitHub</a></p>
-    </div>
-    <figure class="diagram">
-      <a href="assets/img/migration-waves.svg" target="_blank" rel="noopener"><img src="assets/img/migration-waves.svg" alt="Architecture diagram: Windows and Linux migration plan to Azure" loading="lazy" width="560" height="600"></a>
-      <figcaption>Diagram of the demo as built. Open it full size for detail; the text description is in the image's accessible title.</figcaption>
-    </figure>
-  </div>
-</article>
-<article class="project" id="server-ops-toolkit" aria-labelledby="server-ops-toolkit-title">
-  <p class="eyebrow">Windows Server and Linux administration</p>
-  <h2 id="server-ops-toolkit-title">Windows and Linux server ops toolkit</h2>
-  <div class="project-grid">
-    <div>
-      <p>Day-to-day fleet checks: health, patch status, Active Directory hygiene, SSH baseline and user audit.</p>
-      <h3>What it shows</h3>
-      <ul><li>Read-only PowerShell reports with JSON/CSV output and 0/1/2 exit codes for monitoring.</li><li>Bash health check, SSH hardening check (first value wins, as in sshd) and user audit.</li><li>One state-changing script that only restarts allow-listed services and confirms each restart by default.</li></ul>
-      <dl class="meta">
-        <dt>Tested</dt><dd>7 Bash tests against fixture files pass locally; Pester and ShellCheck run in CI once the updated workflow is enabled.</dd>
-        <dt>Limits</dt><dd>Calls that need a real Windows Server or Active Directory were not run; the SSH baseline is a short list, not a full benchmark.</dd>
-      </dl>
-      <ul class="tags" aria-label="Technology"><li>PowerShell</li><li>Pester</li><li>Bash</li><li>CIM/WinRM</li><li>Active Directory module</li></ul>
-      <p style="margin-top:14px"><a class="btn ghost" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/server-ops-toolkit" target="_blank" rel="noopener">Code and README on GitHub</a></p>
-    </div>
-    <figure class="diagram">
-      <a href="assets/img/server-ops-toolkit.svg" target="_blank" rel="noopener"><img src="assets/img/server-ops-toolkit.svg" alt="Architecture diagram: Windows and Linux server ops toolkit" loading="lazy" width="560" height="600"></a>
-      <figcaption>Diagram of the demo as built. Open it full size for detail; the text description is in the image's accessible title.</figcaption>
-    </figure>
-  </div>
-</article>
-<article class="project" id="patching-lab" aria-labelledby="patching-lab-title">
-  <p class="eyebrow">Windows Server and Linux administration</p>
-  <h2 id="patching-lab-title">Patching and OS upgrade lab</h2>
-  <div class="project-grid">
-    <div>
-      <p>A safe patching routine for Windows and Linux: snapshot, patch, compare, report.</p>
-      <h3>What it shows</h3>
-      <ul><li>Pre-checks that snapshot OS build, free space, services, ports and pending reboot.</li><li>Linux patching with --security-only and --dry-run; post-checks that flag anything that did not come back.</li><li>A compliance report built from the results, and an OS upgrade checklist.</li></ul>
-      <dl class="meta">
-        <dt>Tested</dt><dd>ShellCheck, PSScriptAnalyzer, a dry-run of the Linux scripts and the report tests run in GitHub Actions.</dd>
-        <dt>Limits</dt><dd>Lab hosts are synthetic; Windows patching itself is described rather than scripted.</dd>
-      </dl>
-      <ul class="tags" aria-label="Technology"><li>PowerShell</li><li>Bash</li><li>dnf/yum/apt</li><li>Python</li></ul>
-      <p style="margin-top:14px"><a class="btn ghost" href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io/tree/main/demos/patching-lab" target="_blank" rel="noopener">Code and README on GitHub</a></p>
-    </div>
-    <figure class="diagram">
-      <a href="assets/img/patching-flow.svg" target="_blank" rel="noopener"><img src="assets/img/patching-flow.svg" alt="Architecture diagram: Patching and OS upgrade lab" loading="lazy" width="560" height="600"></a>
-      <figcaption>Diagram of the demo as built. Open it full size for detail; the text description is in the image's accessible title.</figcaption>
-    </figure>
-  </div>
-</article>
-  </div>
-</section>
+
 </main>
+
 <footer class="site-footer">
   <div class="wrap">
-    <span>© Vamsikrishna Gollapudi. Demos use fictional systems and synthetic data. Open to 100% remote roles.</span>
-    <a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io">Source on GitHub</a>
+    <span>© 2026 Vamsikrishna Gollapudi · Azure DevOps · SRE · Azure Infrastructure</span>
+    <span><a href="./">Home</a> · <a href="resume.html">Resume</a> · <a href="https://github.com/gollapudivamsi18/gollapudivamsi18.github.io" target="_blank" rel="noopener">Source</a></span>
   </div>
 </footer>
+
 <script src="assets/js/site.js" defer></script>
+<script src="assets/js/assistant-core.js" defer></script>
+<script src="assets/js/assistant-ui.js" defer></script>
 </body>
 </html>
