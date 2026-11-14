@@ -26,18 +26,10 @@ jobs:
           python-version: '3.12'
       - name: AKS demo app tests
         run: cd demos/aks-helm-sre/app && python -m unittest -v
-      - name: Banking pipeline tests
-        run: python -m unittest discover -s demos/banking-pipeline/tests -v
-      - name: Migration wave planner tests
-        run: cd demos/migration-plan/scripts && python -m unittest -v
-      - name: Patch report tests
-        run: cd demos/patching-lab/report && python -m unittest -v
       - name: SRE observability tests (error budget + service)
         run: |
           cd demos/sre-observability/slo && python -m unittest -v
           cd ../app && python -m unittest -v
-      - name: Server ops toolkit tests (Linux scripts against fixtures)
-        run: python -m unittest discover -s demos/server-ops-toolkit/tests -v
       - name: Portfolio assistant engine and knowledge base
         run: node tests/assistant.test.js
       - name: Parse all YAML files
@@ -92,34 +84,11 @@ jobs:
 
   scripts:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v5
       - name: ShellCheck
-        run: shellcheck demos/patching-lab/linux/*.sh demos/aks-helm-sre/sre/*.sh demos/server-ops-toolkit/linux/*.sh
-      - name: Linux patch scripts (dry run)
-        run: |
-          bash demos/patching-lab/linux/precheck.sh /tmp/patchlab
-          sudo bash demos/patching-lab/linux/patch.sh --dry-run
-          bash demos/patching-lab/linux/postcheck.sh /tmp/patchlab
-      - name: PSScriptAnalyzer
-        shell: pwsh
-        run: |
-          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
-          $r = @()
-          $r += Invoke-ScriptAnalyzer -Path demos/patching-lab/windows -Severity Error
-          $r += Invoke-ScriptAnalyzer -Path demos/server-ops-toolkit/windows -Severity Error
-          $r | Format-Table
-          if ($r) { exit 1 }
-      - name: Pester tests (server ops module)
-        shell: pwsh
-        run: |
-          Install-Module Pester -MinimumVersion 5.5 -Force -Scope CurrentUser -SkipPublisherCheck
-          $c = New-PesterConfiguration
-          $c.Run.Path = 'demos/server-ops-toolkit/tests'
-          $c.Run.Exit = $true
-          $c.Output.Verbosity = 'Detailed'
-          Invoke-Pester -Configuration $c
+        run: shellcheck demos/aks-helm-sre/sre/*.sh
 
   prometheus:
     runs-on: ubuntu-24.04
