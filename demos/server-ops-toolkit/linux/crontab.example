@@ -1,7 +1,0 @@
-# Example schedule (install with `crontab -e` for a service account).
-# Health check every 15 minutes; non-zero exit is mailed/forwarded by cron.
-*/15 * * * * /opt/ops/health-check.sh --json >> /var/log/ops/health.jsonl 2>&1
-# Weekly SSH baseline report, Monday 06:00
-0 6 * * 1  /opt/ops/ssh-hardening-check.sh > /var/log/ops/ssh-baseline.txt 2>&1
-# Monthly user audit, 1st of the month 07:00 (root crontab, reads /etc/shadow)
-0 7 1 * *  /opt/ops/user-audit.sh > /var/log/ops/user-audit.txt 2>&1
