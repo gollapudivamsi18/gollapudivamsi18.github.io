@@ -4,7 +4,8 @@
 Checks at 320, 375, 390, 768, 1024, 1440 and 1920 px:
   - no horizontal page overflow
   - no element wider than the viewport (outside scroll containers)
-  - the assistant answers a typed question and a follow-up
+  - the floating assistant answers, keeps identity, and minimizes
+  - the architecture lightbox opens
 Screenshots go to tests/screenshots/ (git-ignored).
 """
 import asyncio
@@ -65,18 +66,28 @@ async def main(chrome):
                 if not ok:
                     failures.append((width, name, res))
                 await page.screenshot(path=str(SHOTS / f"{width}-{name.replace('.html', '')}.png"), full_page=False)
-            # Assistant behaviour (once per width)
-            await page.goto(base + "index.html#assistant-section")
-            await page.wait_for_selector("#assistant .msg.bot")
-            await page.fill("#assistant-input", "What is his notice period?")
-            await page.click("#assistant button[type=submit]")
-            await page.fill("#assistant-input", "tell me more")
-            await page.click("#assistant button[type=submit]")
-            bots = await page.locator("#assistant .msg.bot").all_inner_texts()
-            if len(bots) < 3 or "15 days" not in bots[1]:
+            # Floating assistant (once per width): open, ask, follow up, minimize
+            await page.goto(base + "index.html")
+            await page.click(".ai-fab")
+            await page.wait_for_selector(".ai-panel .msg.bot")
+            await page.fill("#ai-input", "What is his notice period?")
+            await page.click(".ai-panel button.send")
+            await page.fill("#ai-input", "Is he a frontend developer?")
+            await page.click(".ai-panel button.send")
+            bots = await page.locator(".ai-panel .msg.bot").all_inner_texts()
+            if len(bots) < 3 or "15 days" not in bots[1] or not bots[2].startswith("No."):
                 failures.append((width, "assistant", bots[-2:]))
                 print(f"{width:>5}px assistant FAILED: {bots[-2:]}")
-            await page.locator("#assistant").screenshot(path=str(SHOTS / f"{width}-assistant.png"))
+            await page.screenshot(path=str(SHOTS / f"{width}-assistant.png"))
+            await page.click('.ai-panel [data-act="min"]')
+            if await page.locator(".ai-panel").is_visible():
+                failures.append((width, "assistant-minimize", "panel still visible"))
+            # Diagram lightbox
+            await page.click("#p-aks .card-actions button")
+            if not await page.locator("dialog.lightbox[open]").is_visible():
+                failures.append((width, "lightbox", "did not open"))
+            await page.screenshot(path=str(SHOTS / f"{width}-lightbox.png"))
+            await page.keyboard.press("Escape")
             if errors:
                 failures.append((width, "js-errors", errors))
                 print(f"{width:>5}px JS errors: {errors}")
