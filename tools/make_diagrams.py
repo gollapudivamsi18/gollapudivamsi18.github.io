@@ -13,7 +13,7 @@ OUT = Path(__file__).resolve().parent.parent / "assets" / "img"
 C = {
     "bg1": "#0c1a33", "bg2": "#081226", "node": "#11264a", "stroke": "#26497d",
     "title": "#eaf2ff", "sub": "#93abd0", "azure": "#3b9cff", "teal": "#2dd4bf",
-    "amber": "#f5b84b", "violet": "#a78bfa", "group": "#2c5288", "muted": "#5f7aa3",
+    "amber": "#f5b84b", "violet": "#a78bfa", "group": "#2c5288", "groupText": "#6f9fe0", "muted": "#7f97bf",
 }
 FONT = "'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif"
 MONO = "ui-monospace,'Cascadia Code',Consolas,Menlo,monospace"
@@ -33,7 +33,8 @@ class Svg:
         color = color or C["group"]
         self.add(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="12" fill="{color}" fill-opacity=".07" '
                  f'stroke="{color}" stroke-dasharray="4 5" stroke-width="1.2"/>')
-        self.add(f'<text x="{x+12}" y="{y+18}" class="gl" fill="{color}">{escape(label.upper())}</text>')
+        text = C["groupText"] if color == C["group"] else color
+        self.add(f'<text x="{x+12}" y="{y+18}" class="gl" fill="{text}">{escape(label.upper())}</text>')
 
     def node(self, x, y, w, h, title, sub=None, accent=None, dashed=False, lines=None, mono=False):
         accent = accent or C["azure"]
@@ -52,7 +53,7 @@ class Svg:
     def arrow(self, pts, color=None, anim=True, label=None, lx=None, ly=None, dashed=False, both=False):
         color = color or C["azure"]
         d = "M" + " L".join(f"{x},{y}" for x, y in pts)
-        mid = {"#3b9cff": "a", "#2dd4bf": "t", "#f5b84b": "w", "#a78bfa": "v", "#5f7aa3": "g"}[color]
+        mid = {"#3b9cff": "a", "#2dd4bf": "t", "#f5b84b": "w", "#a78bfa": "v", "#7f97bf": "g"}[color]
         cls = "flow" if anim else ""
         extra = ' stroke-dasharray="4 4"' if dashed and not anim else ""
         start = f' marker-start="url(#s{mid})"' if both else ""
@@ -114,18 +115,18 @@ def hero():
     y = 34
     s.node(18, y, 150, 56, "GitHub Enterprise", "PRs · CODEOWNERS")
     s.node(196, y, 150, 56, "CI/CD pipelines", "Actions · Azure Pipelines")
-    s.node(374, y, 150, 56, "Security gates", "SAST · secrets · Trivy", accent=C["violet"])
+    s.node(374, y, 150, 56, "Security gates", "SAST · secrets · images", accent=C["violet"])
     s.node(552, y, 150, 56, "Container registry", "ACR · versioned images")
     for x in (168, 346, 524):
         s.arrow([(x, y + 28), (x + 27, y + 28)])
     s.group(18, 132, 500, 214, "Azure landing zone · 8 subscriptions · 600+ resources")
     s.node(34, 164, 140, 56, "Terraform · Bicep", "modules · drift checks", accent=C["teal"])
-    s.node(196, 164, 148, 56, "Hub-and-spoke", "VNet · NSG · VPN · DNS")
+    s.node(196, 164, 148, 56, "Networking", "VNet · NSG · private DNS")
     s.node(362, 164, 140, 56, "AKS · 6 clusters", "Helm · Ingress · HPA", accent=C["teal"])
     s.node(34, 240, 230, 56, "Identity and governance", "Entra ID · RBAC · Azure Policy", accent=C["violet"])
     s.node(282, 240, 220, 56, "Key Vault · Defender", "secrets · Secure Score 62→85%", accent=C["violet"])
     s.arrow([(174, 192), (195, 192)], C["teal"])
-    s.arrow([(627, 90), (627, 116), (432, 116), (432, 163)], C["teal"], label="helm upgrade --atomic", lx=470, ly=110)
+    s.arrow([(627, 90), (627, 116), (432, 116), (432, 163)], C["teal"], label="Helm-based deploys", lx=470, ly=110)
     s.text(34, 330, "Remote state · nightly drift detection · 98% tagging compliance", "s")
     s.group(530, 132, 178, 292, "Observability · SRE", C["amber"])
     s.node(541, 160, 156, 50, "Prometheus · Grafana", "150+ alert rules", accent=C["amber"])
@@ -145,7 +146,7 @@ def devsecops():
     s = Svg(720, 350, "GitHub Actions DevSecOps pipeline",
             "A pull request fans out to five parallel jobs: Ruff lint, tests with an 80 percent coverage gate, "
             "Bandit SAST, Gitleaks secret scanning and pip-audit. A container job then builds, smoke-tests and "
-            "scans the image with Trivy and produces an SBOM before an environment approval gate.")
+            "scans the image with Trivy and produces an SBOM. A manual run on main reaches a demo-staging environment that only prints what it would deploy.")
     s.node(16, 140, 128, 60, "Pull request", "or push to main")
     jobs = [("Lint", "Ruff · bandit rules"), ("Test", "unittest · coverage ≥ 80%"),
             ("SAST", "Bandit · medium+ fails"), ("Secrets", "Gitleaks · full tree"),
@@ -158,12 +159,12 @@ def devsecops():
     s.text(196, 22, "5 JOBS IN PARALLEL", "gl", C["violet"])
     s.node(412, 106, 152, 128, "Container job", None, accent=C["teal"],
            lines=["docker build", "smoke test /healthz", "non-root check", "Trivy · CRITICAL fails", "CycloneDX SBOM"])
-    s.node(586, 90, 120, 56, "Approval gate", "GitHub environment", accent=C["amber"])
-    s.node(586, 196, 120, 56, "demo-staging", "pattern only", accent=C["teal"], dashed=True)
+    s.node(586, 90, 120, 56, "Manual run", "workflow_dispatch", accent=C["amber"], mono=True)
+    s.node(586, 196, 120, 56, "demo-staging", "prints plan only", accent=C["teal"], dashed=True)
     s.arrow([(564, 150), (575, 150), (575, 118), (585, 118)], C["teal"])
     s.arrow([(646, 146), (646, 195)], C["amber"])
-    s.text(586, 274, "OIDC to Azure,", "s")
-    s.text(586, 288, "no stored secrets", "s")
+    s.text(586, 274, "OIDC to Azure:", "s")
+    s.text(586, 288, "documented only", "s")
     s.text(16, 330, "Fails on: lint finding · coverage < 80% · medium+ SAST · leaked secret · vulnerable "
            "dependency · fixable CRITICAL CVE · root container", "s")
     return s
@@ -173,20 +174,20 @@ def aks():
     s = Svg(720, 330, "AKS and Helm delivery with SRE practices",
             "Azure Pipelines runs tests, helm lint and an image scan, pushes to ACR, deploys to AKS staging with an "
             "atomic Helm upgrade and smoke test, waits for approval, then deploys to production with HPA, PDB and "
-            "probes. Prometheus and Azure Monitor feed burn-rate alerts and an incident runbook; the error-budget "
-            "policy can freeze releases.")
+            "probes. Prometheus recording rules feed burn-rate alerts and an incident runbook; the error-budget "
+            "policy pauses releases when more than 75% of the budget is spent.")
     s.text(16, 26, "DELIVERY", "gl", C["teal"])
     top = [(16, "Azure Pipelines", "tests · helm lint · scan", C["azure"]),
            (158, "ACR", "image:<git-sha>", C["azure"]),
            (300, "AKS staging", "--atomic · smoke test", C["teal"]),
-           (442, "Approval", "environment check", C["amber"]),
+           (442, "Approval", "ADO env. check", C["amber"]),
            (584, "AKS production", "HPA · PDB · probes", C["teal"])]
     for x, t, sub, col in top:
         s.node(x, 40, 124, 58, t, sub, accent=col, mono=(t == "ACR"))
     for x in (140, 282, 424, 566):
         s.arrow([(x, 69), (x + 17, 69)], C["teal"])
     s.text(16, 168, "SRE LOOP", "gl", C["amber"])
-    bottom = [(442, "Prometheus", "Azure Monitor · SLIs"), (300, "Burn-rate alert", "14.4x over 1h and 5m"),
+    bottom = [(442, "Prometheus", "recording rules · SLI"), (300, "Burn-rate alert", "14.4x over 1h and 5m"),
               (158, "Incident runbook", "triage · rollback"), (16, "Error budget", "SLO 99.5% · 28 days")]
     for x, t, sub in bottom:
         s.node(x, 182, 124, 58, t, sub, accent=C["amber"])
@@ -194,7 +195,7 @@ def aks():
     for x in (442, 300, 158):
         s.arrow([(x, 211), (x - 17, 211)], C["amber"])
     s.arrow([(78, 182), (78, 99)], C["muted"], anim=False, dashed=True,
-            label="budget spent → freeze releases", lx=86, ly=150)
+            label=">75% budget spent → pause releases", lx=86, ly=150)
     s.text(16, 286, "Validated with helm lint, helm template and a local smoke test in CI. "
            "Not deployed to a real AKS cluster.", "s")
     s.text(16, 304, "Chart: non-root container · liveness/readiness probes · HorizontalPodAutoscaler · "
@@ -215,7 +216,7 @@ def hub_spoke():
     s.node(206, 58, 230, 36, "AzureFirewallSubnet")
     s.node(206, 102, 230, 36, "GatewaySubnet")
     s.node(206, 146, 230, 36, "Shared services")
-    s.node(206, 198, 110, 58, "Log Analytics", "retention cap", accent=C["amber"])
+    s.node(206, 198, 110, 58, "Log Analytics", "retention · daily cap", accent=C["amber"])
     s.node(326, 198, 110, 58, "Backup vault", "daily policy", accent=C["teal"])
     s.group(506, 30, 198, 104, "Spoke · 10.11.0.0/24", C["teal"])
     s.node(520, 62, 170, 56, "Portfolio app", "subnet · NSG default deny", accent=C["violet"])

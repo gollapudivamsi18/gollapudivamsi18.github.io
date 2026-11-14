@@ -54,3 +54,8 @@ from `main`; they remain on branch `archive/portfolio-v2-all-demos`. See `PROJEC
 ## D11 — Assistant is a floating widget
 The large assistant section was replaced by a small bottom-right widget on every page. Same
 in-browser engine and knowledge base; the knowledge base loads on first open.
+
+## D12 — Final polish pass (14 Nov 2026)
+Diagrams describe only what each project's code does; the platform diagram uses resume wording only.
+Each project shows verification badges. The assistant is described as rule-based (no AI service). Older
+`.project-state/` notes were removed because they described the retired eight-demo version; history is in git.
