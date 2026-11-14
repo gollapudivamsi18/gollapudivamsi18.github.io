@@ -1,17 +1,18 @@
 # Portfolio redesign v3 — progress
 
-Owner: Vamsikrishna Gollapudi · Updated: 14 Nov 2026 · Live: https://gollapudivamsi18.github.io/
+Owner: Vamsikrishna Gollapudi · Updated: 14 Nov 2026 (final polish pass) · Live: https://gollapudivamsi18.github.io/
 
 ## Completed
 - Full visual redesign: dark navy / Azure blue theme, compact layout, no third-party assets.
 - Hero: name, three target roles, short intro, four verified metrics (8 subscriptions · 600+ resources,
   6 production AKS clusters, ~35% MTTR reduction, ~18% Azure cost reduction), platform architecture
   diagram with zoom, CTAs (Explore projects, View resume, Contact me).
-- Featured projects on the homepage with diagram previews, problem/solution, stack, "View architecture"
-  (lightbox) and "Explore project" (projects.html).
+- Featured projects on the homepage as wide rows: readable diagram (select to enlarge), problem/solution,
+  verification badges, stack, "Project details" (projects.html) and "Code" (project folder on GitHub).
 - About (~75 words) with career path: Linux & Windows Administration → Azure Infrastructure → Azure DevOps → SRE.
 - Four compact expertise groups: Azure DevOps & SRE, Azure Infrastructure, Windows Administration, Linux Administration.
-- Experience: five expandable roles (native `<details>`), dates and figures from the Nov 2026 resume.
+- Experience: five expandable roles (native `<details>`), each showing one verified result when collapsed;
+  dates and figures from the Nov 2026 resume.
 - Certifications: AZ-104, AZ-900, KCNA (no credential IDs or links invented).
 - Contact: email, LinkedIn, GitHub; remote-only and 15-day notice. No Naukri link (no verified URL).
 - Resume page rebuilt from `vamsikrishna_Resume(1).docx` (Nov 2026): all sections, view-only, no download,
@@ -42,7 +43,7 @@ All removed files remain recoverable on branch `archive/portfolio-v2-all-demos` 
 
 ## Testing results (14 Nov 2026, local Chrome via Playwright)
 - `node tests/assistant.test.js`: 10 test groups pass.
-- `python3 tests/responsive_check.py`: no horizontal overflow at 320, 375, 390, 768, 1024, 1440, 1920 px on all
+- `python3 tests/responsive_check.py`: no horizontal overflow at 320, 360, 390, 768, 1024, 1440, 1920 px on all
   three pages; assistant answers, keeps identity and minimizes; diagram lightbox opens; no JS errors.
 - Retained project unit tests pass locally (aks-helm-sre app, sre-observability slo + app, devsecops app).
 - HTML nesting checked for all pages. Public-site CI rules respected (no mailto/phone on resume page, no downloads).
@@ -54,6 +55,46 @@ All removed files remain recoverable on branch `archive/portfolio-v2-all-demos` 
 - `pages-build-deployment` completed successfully; https://gollapudivamsi18.github.io/ serves the v3 site.
 - Live checks: homepage, projects.html and resume.html return 200; all five diagrams load; the floating
   assistant answers on the live site (notice period, identity guard); retired demo paths return 404.
+
+## Final polish pass (14 Nov 2026, second session)
+Audit findings and fixes:
+- Live site matched `main`; no outdated project references on the pages.
+- Diagram accuracy: AKS diagram said "Azure Monitor" (the project only has Prometheus rules) → "recording rules · SLI";
+  DevSecOps showed an "Approval gate" but the deploy job is a manual `workflow_dispatch` run that only prints a plan →
+  relabelled; platform diagram named Trivy and `--atomic`, which the resume does not → resume wording only.
+  Error-budget label now matches the policy in `slo.yaml` (pause releases above 75% budget spent).
+- Contrast: diagram group label (2.2:1) and small dim text (4.1:1) raised above 4.5:1.
+- Homepage projects: wide rows (diagram ~640px on desktop, so labels are readable), verification badges
+  (tested in CI / not deployed / synthetic data), "Code" link to each project folder, "Tap to enlarge" on mobile.
+- Experience: each collapsed role now shows one verified result.
+- Expertise chips trimmed and grouped (no ratings).
+- Assistant: no longer called "AI"; it says it is a rule-based portfolio assistant with no external AI service.
+  Added an "architecture diagram" topic.
+- Docs: removed eight stale `.project-state/` notes (kept DECISIONS.md); refreshed `ci/profile-README.md` and the
+  live GitHub profile README (it still listed the retired demos).
+- Resume: the re-uploaded `vamsikrishna_Resume.docx` is byte-identical to the one already used; resume page unchanged
+  and view-only (no download button, no document files in the repo, enforced by CI).
+
+Tests run in this pass (local headless Chrome via Playwright, Node, Python):
+- Responsive: 320, 360, 390, 768, 1024, 1440, 1920 px × 3 pages — no overflow, no JS errors; assistant answers and
+  minimizes; lightbox opens.
+- Accessibility script: every image has alt text, every control a name, one h1 per page, no heading skips,
+  visible focus outline on all tabbed controls, accordion works with Enter, nothing hidden under reduced motion.
+- Voice: denied microphone shows a clear message (real headless Chrome and a mock); a mocked transcript is answered.
+- Internal link and anchor check: no broken links; no duplicate ids. Project folder links exist.
+- Unit tests: assistant (10 groups), aks-helm-sre app, sre-observability slo + app, devsecops app — all pass.
+- Not run locally (tools unavailable here): terraform validate, helm lint, promtool, shellcheck, Trivy — these
+  run in GitHub Actions; see the Actions tab for the run on the final commit. External links (LinkedIn) not fetched.
+
+Deployment of the polish pass — LIVE (verified 14 Nov 2026):
+- Pushed through the GitHub connector; `pages-build-deployment` succeeded; the live site serves the new CSS,
+  diagrams ("recording rules" label), knowledge base ("architecture" topic), 4 badge rows, 4 Code links and
+  5 experience highlights. The assistant answered live (architecture, "is this a real AI?", notice period).
+  Stale `.project-state/` files return 404.
+- CI: one "Validate demos" run failed in between (#41: the knowledge base landed one commit before its updated
+  test); the next run (#42) and later runs passed.
+- GitHub profile README (gollapudivamsi18/gollapudivamsi18) updated in the web editor to list the four projects.
+- Last fix: the assistant panel height is capped so it never covers the site header on short screens.
 
 ## Continuation instructions
 1. Read this file. Site is static; edit `index.html`, `projects.html`, `resume.html`, `assets/`.
